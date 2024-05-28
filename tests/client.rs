@@ -14,20 +14,43 @@ async fn account_generate_token() {
 }
 
 #[tokio::test]
-async fn portfolio_accounts() {
+async fn account_generate_token_basic_auth() {
     let username = match env::var("IB_USERNAME") {
         Ok(val) => val,
         Err(_) => {
-            eprintln!("IB_USERNAME not set");
-            return
+            panic!("IB_USERNAME not set");
         }
     };
 
     let password = match env::var("IB_PASSWORD") {
         Ok(val) => val,
         Err(_) => {
-            eprintln!("IB_PASSWORD not set");
-            return
+            panic!("IB_PASSWORD not set");
+        }
+    };
+    let configuration= Configuration {
+        basic_auth: Some((username, Some(password.to_string()))),
+        ..Configuration::default()
+    };
+
+    let token = generate_token(&configuration, "client_credentials", "", "", None).await;
+    println!("{:?}", token);
+    assert_ok!(token);
+}
+
+#[tokio::test]
+async fn portfolio_accounts() {
+    let username = match env::var("IB_USERNAME") {
+        Ok(val) => val,
+        Err(_) => {
+            panic!("IB_USERNAME not set");
+        }
+    };
+
+    let password = match env::var("IB_PASSWORD") {
+        Ok(val) => val,
+        Err(_) => {
+            panic!("IB_PASSWORD not set");
         }
     };
     let configuration= Configuration {
