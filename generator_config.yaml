@@ -1,0 +1,12 @@
+bestFitInt: false
+enumNameSuffix: ''
+hideGenerationTimestamp: true
+library: reqwest
+packageName: ib_web_rust
+packageVersion: 1.0.0
+preferUnsignedInt: false
+supportAsync: true
+supportMiddleware: false
+supportMultipleResponses: false
+useSingleRequestParameter: false
+withAWSV4Signature: false

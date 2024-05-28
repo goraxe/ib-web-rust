@@ -1,0 +1,281 @@
+[env]
+API_URL = "https://test/"
+API_NAME = "ib_web_rust"
+LIB_NAME = "ib_web_rust"
+ORIGINAL_OUTPUT_DIR = "/home/goraxe/projects/github.com/goraxe/ib-web-rust"
+OUTPUT_TEMP_DIR = "./temp"
+OPEN_API_GENERATOR_CLI_URL = "https://raw.githubusercontent.com/OpenAPITools/openapi-generator/master/bin/utils/openapi-generator-cli.sh"
+OPEN_API_GENERATOR_CLI_SUBDIR = "bin"
+OPEN_API_GENERATOR_CLI_PATH = "${OPEN_API_GENERATOR_CLI_SUBDIR}/${OPEN_API_GENERATOR_CLI_SCRIPT}"
+OPEN_API_GENERATOR_CLI_SCRIPT = "openapi-generator-cli"
+OPEN_API_GENERATOR_CONFIG_FILE = "generator_config.yaml"
+OPEN_API_GENERATOR_CONFIG_PATH = "${OPEN_API_GENERATOR_CONFIG_FILE}"
+SPEC_FILE_DOWNLOAD_DIR = "${OUTPUT_TEMP_DIR}/specdl"
+SPEC_FILE_NAME = "api-docs.json"
+SPEC_FILE_PATH = "${SPEC_FILE_NAME}"
+SPEC_FILE_URL = "https://api.ibkr.com/gw/api/v3/api-docs"
+
+[env.OUTPUT_DIR]
+script = ["pwd"]
+
+[tasks.spec-download-default]
+description = "Downloads ${API_NAME} Open API specification from '${API_URL}'."
+category = "openapi_lib_generator v0.2.312"
+command = "wget"
+args = [
+    "${SPEC_FILE_URL}",
+    "-O",
+    "${SPEC_FILE_PATH}",
+]
+
+[tasks.lib-code-generate]
+description = "Generate ${LIB_NAME} code"
+category = "openapi_lib_generator v0.2.312"
+condition_script = [
+    "#!/bin/bash",
+    "# check if openapi cli command exists",
+    "if command -v ${OPEN_API_GENERATOR_CLI_SCRIPT} >& /dev/null ;  then",
+    "  echo \"Found OpenAPI CLI command.\"",
+    "  exit 0",
+    "else",
+    "  echo \"Missing OpenAPI CLI command. Try running `cargo make openapi-cli-bash-install`\"",
+    "  exit 1",
+    "fi",
+]
+command = "${OPEN_API_GENERATOR_CLI_SCRIPT}"
+args = [
+    "generate",
+    "--generator-name",
+    "rust",
+    "--output",
+    "${OUTPUT_DIR}",
+    "--input-spec",
+    "${SPEC_FILE_PATH}",
+    "--config",
+    "${OPEN_API_GENERATOR_CONFIG_PATH}",
+    "--skip-validate-spec",
+]
+
+[tasks.spec-download]
+description = "Downloads ${API_NAME} Open API specification from specified vararg'."
+category = "openapi_lib_generator v0.2.312"
+command = "wget"
+args = [
+    "${@}",
+    "-O",
+    "${SPEC_FILE_PATH}",
+]
+
+[tasks.cargo-fix-generated]
+description = "Fix ${LIB_NAME} project generated code'."
+category = "openapi_lib_generator v0.2.312"
+command = "cargo"
+args = [
+    "fix",
+    "--broken-code",
+    "--edition",
+    "--edition-idioms",
+    "--allow-dirty",
+    "--all-targets",
+    "--all-features",
+    "--verbose",
+    "--verbose",
+]
+
+[tasks.openapi-cli-bash-install]
+description = "Install Open API generator CLI'."
+category = "openapi_lib_generator v0.2.312"
+script = [
+    "#!/bin/bash",
+    "# enable the downloaded cli artifact file",
+    "CLI_SUBDIR=$HOME/${OPEN_API_GENERATOR_CLI_SUBDIR}",
+    "CLI_PATH=$HOME/${OPEN_API_GENERATOR_CLI_PATH}",
+    "CLI_SCRIPT=${OPEN_API_GENERATOR_CLI_SCRIPT}",
+    "if [[ ! -s \"$HOME/.bash_profile\" && -s \"$HOME/.profile\" ]] ; then",
+    "    PROFILE_FILE=\"$HOME/.profile\"",
+    "else",
+    "    PROFILE_FILE=\"$HOME/.bash_profile\"",
+    "fi",
+    "# echo $CLI_SCRIPT",
+    "function check_cli",
+    "{",
+    "    source $PROFILE_FILE",
+    "    if command -v $CLI_SCRIPT >& /dev/null",
+    "    then",
+    '        echo "Install success. You can now run the \"$CLI_SCRIPT\" command"',
+    '        echo "After running \"source $PROFILE_FILE\""',
+    "        exit 0",
+    "    else",
+    "        echo \"Install failed.\"",
+    "        exit 0",
+    "    fi",
+    "}",
+    "function enable_cli",
+    "{",
+    "    chmod u+x $CLI_PATH",
+    '    line_to_add="export PATH=\$PATH:$CLI_SUBDIR/"',
+    "    if ! grep -q \"$line_to_add\" \"${PROFILE_FILE}\" ; then",
+    '        echo "Adding \"$line_to_add\" to ${PROFILE_FILE}."',
+    '        echo "\# OpenAPI Generator CLI" >> $PROFILE_FILE',
+    "        echo \"$line_to_add\" >> $PROFILE_FILE",
+    "    else",
+    "        echo \"Line already found in $PROFILE_FILE\"",
+    "    fi",
+    "    check_cli",
+    "}",
+    "# review the downloaded cli artifact file and optionally enable",
+    "function deal_with_cli",
+    "{",
+    "    echo Downloaded Open API Generator CLI script at $CLI_PATH",
+    "    echo Do you want to enable, review the script or delete it?",
+    "    select erd in \"Enable\" \"Review\" \"Delete\"; do",
+    "        case $erd in",
+    "            Enable)",
+    "                enable_cli",
+    "                break",
+    "                ;;",
+    "            Review)",
+    "                less $CLI_PATH",
+    "                deal_with_cli",
+    "                break",
+    "                ;;",
+    "            Delete)",
+    "                rm $CLI_PATH",
+    "                rm -rf $CLI_SUBDIR",
+    "                exit 1",
+    "                ;;",
+    "        esac",
+    "    done",
+    "}",
+    "# get the cli",
+    "function get_cli",
+    "{",
+    "    mkdir -p $CLI_SUBDIR",
+    "    wget -N ${OPEN_API_GENERATOR_CLI_URL} -O $CLI_PATH",
+    "}",
+    "get_cli",
+    "deal_with_cli",
+]
+
+[tasks.crate-scaffold]
+description = "Setup ${LIB_NAME} project'."
+category = "openapi_lib_generator v0.2.312"
+dependencies = [
+    "output-dir-create",
+    "output-dir-clean",
+]
+
+[tasks.lib-code-generate-dry-run]
+description = "Generate ${LIB_NAME} code"
+category = "openapi_lib_generator v0.2.312"
+condition_script = [
+    "#!/bin/bash",
+    "# check if openapi cli command exists",
+    "if command -v ${OPEN_API_GENERATOR_CLI_SCRIPT} >& /dev/null ;  then",
+    "  echo \"Found OpenAPI CLI command.\"",
+    "  exit 0",
+    "else",
+    "  echo \"Missing OpenAPI CLI command. Try running `cargo make openapi-cli-bash-install`\"",
+    "  exit 1",
+    "fi",
+]
+command = "${OPEN_API_GENERATOR_CLI_SCRIPT}"
+args = [
+    "generate",
+    "--generator-name",
+    "rust",
+    "--output",
+    "${OUTPUT_DIR}",
+    "--input-spec",
+    "${SPEC_FILE_PATH}",
+    "--config",
+    "${OPEN_API_GENERATOR_CONFIG_PATH}",
+    "--dry-run",
+]
+
+[tasks.openapi-cli-check]
+description = "Check that openapi cli generator tool is installed"
+category = "openapi_lib_generator v0.2.312"
+command = "command"
+args = [
+    "-v",
+    "${OPEN_API_GENERATOR_CLI_SCRIPT}",
+]
+
+[tasks.output-dir-clean]
+description = "Setup ${LIB_NAME} output dir at ${OUTPUT_DIR}'."
+category = "openapi_lib_generator v0.2.312"
+command = "rm"
+args = [
+    "-rf",
+    "${OUTPUT_DIR}/*",
+]
+
+[tasks.output-dir-create]
+description = "Create ${LIB_NAME} output dir at ${OUTPUT_DIR}'."
+category = "openapi_lib_generator v0.2.312"
+command = "mkdir"
+
+[tasks.spec-validate]
+description = "A task that validates the spec"
+category = "openapi_lib_generator v0.2.312"
+command = "${OPEN_API_GENERATOR_CLI_SCRIPT}"
+args = [
+    "validate",
+    "--input-spec",
+    "${SPEC_FILE_PATH}",
+    "--recommend",
+]
+
+[tasks.generate-all]
+description = "Generate ${LIB_NAME} code and try to get it up to par"
+category = "openapi_lib_generator v0.2.312"
+script = [
+    "//! ```cargo",
+    "//! [dependencies]",
+    "//! openapi_lib_generator = { version = \"0.2.312\" }",
+    "//! serde_yaml = { version = \"0.9.19\" }",
+    "//! tokio = { version = \"1.26.0\", features = [\"full\"] }",
+    "//! ```",
+    "use openapi_lib_generator::{",
+    "  cli::CLIError,",
+    "  generate::{",
+    "    cargos::CargoConfigurator,",
+    "    readmes::READMEGenerator",
+    "  }",
+    "};",
+    "mod yaml_specs {",
+    "  pub const CARGO_CONFIGURATOR_YAML: &'static str = r#\"generation_timestamp_string: 2024-05-28T03:55:54.983403946+00:00",
+    "generation_authors:",
+    "- Plastic Arts Show <plasticartsshow@gmail.com>",
+    "this_crate_name: openapi_lib_generator",
+    "this_crate_ver: 0.2.312",
+    "original_api_name: ib_web_rust",
+    "subcommand_opt: null",
+    "\"#;",
+    "  pub const README_GENERATOR_YAML: &'static str = r#\"start_readme_string: '# ib_web_rust'",
+    "end_readme_string: |-",
+    "  ## About working on `ib_web_rust`",
+    "  Hey! This library:",
+    "  - Was *generated* using openapi_lib_generator v0.2.312 at 2024-05-28T03:55:54.983403946+00:00.",
+    "  - Implements the [ib_web_rust](https://test/).",
+    "  For these reasons, proposed changes to this repository will likely not be accepted. Try proposing changes to the generator tools instead.",
+    "  - Uses the corresponding OpenAPI specification found at [https://api.ibkr.com/gw/api/v3/api-docs].",
+    "\"#;",
+    "}",
+    "#[tokio::main]",
+    "async fn main() -> Result<(), CLIError> {",
+    "  let cargo_configurator: CargoConfigurator = serde_yaml::from_str(yaml_specs::CARGO_CONFIGURATOR_YAML)?;",
+    "  cargo_configurator.update_cargo_manifest_post_generation().await?;",
+    "  cargo_configurator.update_cargo_manifest_post_fix_edition().await?;",
+    "  let readme_generator: READMEGenerator = serde_yaml::from_str(yaml_specs::README_GENERATOR_YAML)?;",
+    "  readme_generator.update_readme_md_file().await?;",
+    "  println!(\"updates complete\");",
+    "  Ok(())",
+    "}",
+]
+script_runner = "@rust"
+dependencies = [
+    "lib-code-generate",
+    "cargo-fix-generated",
+]

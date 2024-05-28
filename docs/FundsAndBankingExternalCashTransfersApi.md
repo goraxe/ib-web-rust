@@ -1,0 +1,68 @@
+# \FundsAndBankingExternalCashTransfersApi
+
+All URIs are relative to *https://api.ibkr.com*
+
+Method | HTTP request | Description
+------------- | ------------- | -------------
+[**gw_api_v1_external_cash_transfers_client_id_post**](FundsAndBankingExternalCashTransfersApi.md#gw_api_v1_external_cash_transfers_client_id_post) | **POST** /gw/api/v1/external-cash-transfers/{clientId} | External Cash transfers (Deposit and Withdraw fund)
+[**gw_api_v1_external_cash_transfers_query_client_id_post**](FundsAndBankingExternalCashTransfersApi.md#gw_api_v1_external_cash_transfers_query_client_id_post) | **POST** /gw/api/v1/external-cash-transfers/query/{clientId} | Get Withdrawable Cash Queries
+
+
+
+## gw_api_v1_external_cash_transfers_client_id_post
+
+> models::InstructionResponse gw_api_v1_external_cash_transfers_client_id_post(client_id, gw_api_v1_external_cash_transfers_client_id_post_request)
+External Cash transfers (Deposit and Withdraw fund)
+
+### Parameters
+
+
+Name | Type | Description  | Required | Notes
+------------- | ------------- | ------------- | ------------- | -------------
+**client_id** | **String** | The client's clientId | [required] |
+**gw_api_v1_external_cash_transfers_client_id_post_request** | [**GwApiV1ExternalCashTransfersClientIdPostRequest**](GwApiV1ExternalCashTransfersClientIdPostRequest.md) |  | [required] |
+
+### Return type
+
+[**models::InstructionResponse**](InstructionResponse.md)
+
+### Authorization
+
+No authorization required
+
+### HTTP request headers
+
+- **Content-Type**: application/json
+- **Accept**: application/json, application/problem+json
+
+[[Back to top]](#) [[Back to API list]](../README.md#documentation-for-api-endpoints) [[Back to Model list]](../README.md#documentation-for-models) [[Back to README]](../README.md)
+
+
+## gw_api_v1_external_cash_transfers_query_client_id_post
+
+> models::InstructionResponse gw_api_v1_external_cash_transfers_query_client_id_post(client_id, gw_api_v1_external_cash_transfers_query_client_id_post_request)
+Get Withdrawable Cash Queries
+
+### Parameters
+
+
+Name | Type | Description  | Required | Notes
+------------- | ------------- | ------------- | ------------- | -------------
+**client_id** | **String** | The client's clientId | [required] |
+**gw_api_v1_external_cash_transfers_query_client_id_post_request** | [**GwApiV1ExternalCashTransfersQueryClientIdPostRequest**](GwApiV1ExternalCashTransfersQueryClientIdPostRequest.md) | Create fee template request body | [required] |
+
+### Return type
+
+[**models::InstructionResponse**](InstructionResponse.md)
+
+### Authorization
+
+No authorization required
+
+### HTTP request headers
+
+- **Content-Type**: application/json
+- **Accept**: application/json, application/problem+json
+
+[[Back to top]](#) [[Back to API list]](../README.md#documentation-for-api-endpoints) [[Back to Model list]](../README.md#documentation-for-models) [[Back to README]](../README.md)
+
