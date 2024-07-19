@@ -19,12 +19,10 @@ pub struct BrokerageService {
 
 impl BrokerageService {
     pub fn new() -> BrokerageService {
-        BrokerageService {
-            code: None,
-        }
+        BrokerageService { code: None }
     }
 }
-/// 
+///
 #[derive(Clone, Copy, Debug, Eq, PartialEq, Ord, PartialOrd, Hash, Serialize, Deserialize)]
 pub enum Code {
     #[serde(rename = "IBClearing")]
@@ -40,4 +38,3 @@ impl Default for Code {
         Self::IbClearing
     }
 }
-

@@ -4,7 +4,7 @@
 
 Name | Type | Description | Notes
 ------------ | ------------- | ------------- | -------------
-**substantial_us_owners** | Option<[**models::SubstantialUsOwners**](SubstantialUsOwners.md)> |  | [optional]
+**substantial_us_owner_external_ids** | Option<**Vec<String>**> |  | [optional]
 **name** | Option<**String**> |  | [optional]
 **country_of_organization** | Option<**String**> |  | [optional]
 **disregarded_entity_name** | Option<**String**> |  | [optional]
@@ -13,7 +13,7 @@ Name | Type | Description | Notes
 **us_tin** | Option<**String**> |  | [optional]
 **giin** | Option<**String**> |  | [optional]
 **foreign_tin** | Option<**String**> |  | [optional]
-**tin_or_explanation_reqd_to_create_accounts** | Option<**bool**> |  | [optional]
+**tin_or_explanation_required** | Option<**bool**> |  | [optional]
 **explanation** | Option<**String**> |  | [optional]
 **reference_number** | Option<**i32**> |  | [optional]
 **submit_date** | Option<**String**> |  | [optional]

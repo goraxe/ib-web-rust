@@ -13,7 +13,10 @@ use serde::{Deserialize, Serialize};
 
 #[derive(Clone, Default, Debug, PartialEq, Serialize, Deserialize)]
 pub struct RegulatedMemberships {
-    #[serde(rename = "regulatedMemberships", skip_serializing_if = "Option::is_none")]
+    #[serde(
+        rename = "regulatedMemberships",
+        skip_serializing_if = "Option::is_none"
+    )]
     pub regulated_memberships: Option<Vec<models::RegulatedMembership>>,
 }
 
@@ -24,4 +27,3 @@ impl RegulatedMemberships {
         }
     }
 }
-

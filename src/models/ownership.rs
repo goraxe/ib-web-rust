@@ -19,9 +19,6 @@ pub struct Ownership {
 
 impl Ownership {
     pub fn new() -> Ownership {
-        Ownership {
-            percentage: None,
-        }
+        Ownership { percentage: None }
     }
 }
-

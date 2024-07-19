@@ -19,9 +19,6 @@ pub struct MdServicesType {
 
 impl MdServicesType {
     pub fn new() -> MdServicesType {
-        MdServicesType {
-            service: None,
-        }
+        MdServicesType { service: None }
     }
 }
-

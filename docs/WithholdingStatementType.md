@@ -4,12 +4,12 @@
 
 Name | Type | Description | Notes
 ------------ | ------------- | ------------- | -------------
-**acct_id** | Option<**String**> |  | [optional]
+**account_id** | Option<**String**> |  | [optional]
 **fatca_compliant_type** | Option<**String**> |  | [optional]
 **us_backup_withholding** | Option<**bool**> |  | [optional]
 **treaty_country** | Option<**String**> |  | [optional]
-**is_corporation** | Option<**bool**> |  | [optional]
-**is_flow_through** | Option<**bool**> |  | [optional]
+**corporation** | Option<**bool**> |  | [optional]
+**flow_through** | Option<**bool**> |  | [optional]
 **effective_date** | Option<[**String**](string.md)> |  | [optional]
 **dividend_rate** | Option<**f32**> |  | [optional]
 **interest_rate** | Option<**f32**> |  | [optional]

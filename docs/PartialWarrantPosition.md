@@ -6,7 +6,7 @@ Name | Type | Description | Notes
 ------------ | ------------- | ------------- | -------------
 **symbol** | Option<**String**> |  | [optional]
 **number_of_shares** | Option<**i64**> |  | [optional]
-**is_all** | Option<**bool**> |  | [optional]
+**all** | Option<**bool**> |  | [optional]
 **position** | Option<**String**> |  | [optional]
 **option_type** | Option<**String**> |  | [optional]
 **strike_price** | Option<**i64**> |  | [optional]

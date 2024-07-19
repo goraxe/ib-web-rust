@@ -7,7 +7,7 @@ Name | Type | Description | Notes
 **identification** | Option<[**Vec<models::TrustIdentification>**](TrustIdentification.md)> |  | [optional]
 **financial_information** | Option<[**Vec<models::FinancialInformation>**](FinancialInformation.md)> |  | [optional]
 **regulatory_information** | Option<[**Vec<models::RegulatoryInformation>**](RegulatoryInformation.md)> |  | [optional]
-**regulated_memberships** | Option<[**models::RegulatedMemberships**](RegulatedMemberships.md)> |  | [optional]
+**regulated_memberships** | Option<[**Vec<models::RegulatedMembership>**](RegulatedMembership.md)> |  | [optional]
 **accredited_investor_information** | Option<[**models::AccreditedInvestorInformation**](AccreditedInvestorInformation.md)> |  | [optional]
 **trustees** | Option<[**models::TrusteesType**](TrusteesType.md)> |  | [optional]
 **beneficiaries** | Option<[**models::AssociationTypeEntities**](AssociationTypeEntities.md)> |  | [optional]

@@ -19,12 +19,10 @@ pub struct ControllingPersonType {
 
 impl ControllingPersonType {
     pub fn new() -> ControllingPersonType {
-        ControllingPersonType {
-            designation: None,
-        }
+        ControllingPersonType { designation: None }
     }
 }
-/// 
+///
 #[derive(Clone, Copy, Debug, Eq, PartialEq, Ord, PartialOrd, Hash, Serialize, Deserialize)]
 pub enum Designation {
     #[serde(rename = "SENIOR_MGMT_OFFICER")]
@@ -40,4 +38,3 @@ impl Default for Designation {
         Self::SeniorMgmtOfficer
     }
 }
-

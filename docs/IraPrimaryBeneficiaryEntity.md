@@ -5,10 +5,10 @@
 Name | Type | Description | Notes
 ------------ | ------------- | ------------- | -------------
 **name** | Option<**String**> |  | [optional]
-**location** | Option<[**models::Address**](Address.md)> |  | [optional]
+**address** | Option<[**models::Address**](Address.md)> |  | [optional]
 **id** | Option<**String**> |  | [optional]
 **external_id** | Option<**String**> |  | [optional]
-**ownership** | Option<[**models::Ownership**](Ownership.md)> |  | [optional]
+**ownership_percentage** | Option<**f64**> |  | [optional]
 **title** | Option<[**models::Title**](Title.md)> |  | [optional]
 **relationship** | Option<**String**> |  | [optional]
 **executor** | Option<[**models::Individual**](Individual.md)> |  | [optional]

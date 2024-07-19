@@ -6,7 +6,7 @@ Name | Type | Description | Notes
 ------------ | ------------- | ------------- | -------------
 **email** | Option<**String**> |  | [optional]
 **token** | Option<**String**> |  | [optional]
-**has_access** | Option<**bool**> |  | [optional]
+**access** | Option<**bool**> |  | [optional]
 **external_id** | Option<**String**> |  | [optional]
 **entity_id** | Option<**String**> |  | [optional]
 

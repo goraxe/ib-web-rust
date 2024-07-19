@@ -19,9 +19,6 @@ pub struct SubstantialUsOwner {
 
 impl SubstantialUsOwner {
     pub fn new() -> SubstantialUsOwner {
-        SubstantialUsOwner {
-            external_id: None,
-        }
+        SubstantialUsOwner { external_id: None }
     }
 }
-

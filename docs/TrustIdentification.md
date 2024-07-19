@@ -17,8 +17,8 @@ Name | Type | Description | Notes
 **registration_number** | Option<**String**> |  | [optional]
 **registration_type** | Option<**String**> |  | [optional]
 **registration_country** | Option<**String**> |  | [optional]
-**has_same_mail_address** | Option<**bool**> |  | [optional]
-**is_translated** | Option<**bool**> |  | [optional]
+**same_mail_address** | Option<**bool**> |  | [optional]
+**translated** | Option<**bool**> |  | [optional]
 
 [[Back to Model list]](../README.md#documentation-for-models) [[Back to API list]](../README.md#documentation-for-api-endpoints) [[Back to README]](../README.md)
 

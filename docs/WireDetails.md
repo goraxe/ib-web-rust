@@ -5,7 +5,7 @@
 Name | Type | Description | Notes
 ------------ | ------------- | ------------- | -------------
 **bank_name** | Option<**String**> |  | [optional]
-**bank_acct_number** | Option<**String**> |  | [optional]
+**bank_account_number** | Option<**String**> |  | [optional]
 **bank_code** | Option<**String**> |  | [optional]
 **routing_number** | Option<**String**> |  | [optional]
 **instruction** | Option<**String**> |  | [optional]

@@ -91,22 +91,12 @@ pub fn parse_deep_object(prefix: &str, value: &serde_json::Value) -> Vec<(String
 }
 
 pub mod account_management_accounts_api;
-pub mod account_management_enumerations_api;
-pub mod account_management_requests_api;
+pub mod account_management_instructions_api;
+pub mod account_management_statements_api;
+pub mod account_management_transfers_api;
+pub mod account_management_utilities_api;
 pub mod authorization_sso_sessions_api;
 pub mod authorization_token_api;
-pub mod funds_and_banking_accounts_api;
-pub mod funds_and_banking_bank_instructions_api;
-pub mod funds_and_banking_client_instructions_api;
-pub mod funds_and_banking_external_asset_transfers_api;
-pub mod funds_and_banking_external_cash_transfers_api;
-pub mod funds_and_banking_fee_templates_api;
-pub mod funds_and_banking_instruction_sets_api;
-pub mod funds_and_banking_instructions_api;
-pub mod funds_and_banking_internal_asset_transfers_api;
-pub mod funds_and_banking_internal_cash_transfers_api;
-pub mod funds_and_banking_participating_banks_api;
-pub mod reporting_statements_api;
 pub mod trading_accounts_api;
 pub mod trading_alerts_api;
 pub mod trading_contracts_api;

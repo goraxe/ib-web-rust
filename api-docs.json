@@ -7,7 +7,7 @@
       "name": "API support",
       "email": "api@interactivebrokers.com"
     },
-    "version": "2.7.0"
+    "version": "2.9.0"
   },
   "externalDocs": {
     "description": "Find out more about IB's public API offerings.",
@@ -30,13 +30,23 @@
       "x-ib-tag-group-name": "Account Management"
     },
     {
-      "name": "Account Management Enumerations",
-      "x-displayName": "Enumerations",
+      "name": "Account Management Instructions",
+      "x-displayName": "Instructions",
       "x-ib-tag-group-name": "Account Management"
     },
     {
-      "name": "Account Management Requests",
-      "x-displayName": "Requests",
+      "name": "Account Management Statements",
+      "x-displayName": "Statements",
+      "x-ib-tag-group-name": "Account Management"
+    },
+    {
+      "name": "Account Management Transfers",
+      "x-displayName": "Transfers",
+      "x-ib-tag-group-name": "Account Management"
+    },
+    {
+      "name": "Account Management Utilities",
+      "x-displayName": "Utilities",
       "x-ib-tag-group-name": "Account Management"
     },
     {
@@ -48,66 +58,6 @@
       "name": "Authorization Token",
       "x-displayName": "Token",
       "x-ib-tag-group-name": "Authorization"
-    },
-    {
-      "name": "Funds and Banking Accounts",
-      "x-displayName": "Accounts",
-      "x-ib-tag-group-name": "Funds and Banking"
-    },
-    {
-      "name": "Funds and Banking Bank Instructions",
-      "x-displayName": "Bank Instructions",
-      "x-ib-tag-group-name": "Funds and Banking"
-    },
-    {
-      "name": "Funds and Banking Client Instructions",
-      "x-displayName": "Client Instructions",
-      "x-ib-tag-group-name": "Funds and Banking"
-    },
-    {
-      "name": "Funds and Banking External Asset Transfers",
-      "x-displayName": "External Asset Transfers",
-      "x-ib-tag-group-name": "Funds and Banking"
-    },
-    {
-      "name": "Funds and Banking External Cash Transfers",
-      "x-displayName": "External Cash Transfers",
-      "x-ib-tag-group-name": "Funds and Banking"
-    },
-    {
-      "name": "Funds and Banking Fee Templates",
-      "x-displayName": "Fee Templates",
-      "x-ib-tag-group-name": "Funds and Banking"
-    },
-    {
-      "name": "Funds and Banking Instruction Sets",
-      "x-displayName": "Instruction Sets",
-      "x-ib-tag-group-name": "Funds and Banking"
-    },
-    {
-      "name": "Funds and Banking Instructions",
-      "x-displayName": "Instructions",
-      "x-ib-tag-group-name": "Funds and Banking"
-    },
-    {
-      "name": "Funds and Banking Internal Asset Transfers",
-      "x-displayName": "Internal Asset Transfers",
-      "x-ib-tag-group-name": "Funds and Banking"
-    },
-    {
-      "name": "Funds and Banking Internal Cash Transfers",
-      "x-displayName": "Internal Cash Transfers",
-      "x-ib-tag-group-name": "Funds and Banking"
-    },
-    {
-      "name": "Funds and Banking Participating Banks",
-      "x-displayName": "Participating Banks",
-      "x-ib-tag-group-name": "Funds and Banking"
-    },
-    {
-      "name": "Reporting Statements",
-      "x-displayName": "Statements",
-      "x-ib-tag-group-name": "Reporting"
     },
     {
       "name": "Trading Accounts",
@@ -965,6 +915,7 @@
         "tags": [
           "Account Management Accounts"
         ],
+        "summary": "Get file details",
         "parameters": [
           {
             "name": "account_id",
@@ -989,14 +940,55 @@
         ],
         "responses": {
           "400": {
-            "description": "Bad Request"
-          },
-          "200": {
-            "description": "OK",
+            "description": "Returns error description representing bad request",
             "content": {
               "application/json": {
                 "schema": {
-                  "type": "object"
+                  "$ref": "#/components/schemas/ErrorResponse"
+                }
+              }
+            }
+          },
+          "403": {
+            "description": "Forbidden",
+            "content": {
+              "*/*": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorResponse"
+                }
+              }
+            }
+          },
+          "200": {
+            "description": "Get file details",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "oneOf": [
+                    {
+                      "$ref": "#/components/schemas/FileDetailsResponse"
+                    },
+                    {
+                      "$ref": "#/components/schemas/ResponseFileResponse"
+                    }
+                  ]
+                }
+              }
+            }
+          },
+          "500": {
+            "description": "Returns error description representing internal server error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "oneOf": [
+                    {
+                      "$ref": "#/components/schemas/FileDetailsResponse"
+                    },
+                    {
+                      "$ref": "#/components/schemas/ResponseFileResponse"
+                    }
+                  ]
                 }
               }
             }
@@ -1012,18 +1004,7 @@
         "tags": [
           "Account Management Accounts"
         ],
-        "parameters": [
-          {
-            "name": "Authorization",
-            "in": "header",
-            "required": false,
-            "style": "simple",
-            "explode": false,
-            "schema": {
-              "type": "string"
-            }
-          }
-        ],
+        "summary": "Create new accounts",
         "requestBody": {
           "content": {
             "application/jwt": {
@@ -1036,14 +1017,51 @@
         },
         "responses": {
           "400": {
-            "description": "Bad Request"
-          },
-          "200": {
-            "description": "OK",
+            "description": "Returns error description representing bad request",
             "content": {
               "application/json": {
                 "schema": {
-                  "$ref": "#/components/schemas/UpsertResponse"
+                  "$ref": "#/components/schemas/ErrorResponse"
+                }
+              }
+            }
+          },
+          "403": {
+            "description": "Forbidden",
+            "content": {
+              "*/*": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorResponse"
+                }
+              }
+            }
+          },
+          "200": {
+            "description": "Create account",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/StatusResponse"
+                }
+              }
+            }
+          },
+          "202": {
+            "description": "Initiate account creation request",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/RequestInfoResponse"
+                }
+              }
+            }
+          },
+          "500": {
+            "description": "Returns error description representing internal server error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorResponse"
                 }
               }
             }
@@ -1059,18 +1077,7 @@
         "tags": [
           "Account Management Accounts"
         ],
-        "parameters": [
-          {
-            "name": "Authorization",
-            "in": "header",
-            "required": false,
-            "style": "simple",
-            "explode": false,
-            "schema": {
-              "type": "string"
-            }
-          }
-        ],
+        "summary": "Update existing accounts",
         "requestBody": {
           "content": {
             "application/jwt": {
@@ -1083,14 +1090,51 @@
         },
         "responses": {
           "400": {
-            "description": "Bad Request"
-          },
-          "200": {
-            "description": "OK",
+            "description": "Returns error description representing bad request",
             "content": {
               "application/json": {
                 "schema": {
-                  "$ref": "#/components/schemas/UpsertResponse"
+                  "$ref": "#/components/schemas/ErrorResponse"
+                }
+              }
+            }
+          },
+          "403": {
+            "description": "Forbidden",
+            "content": {
+              "*/*": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorResponse"
+                }
+              }
+            }
+          },
+          "200": {
+            "description": "Update account",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/StatusResponse"
+                }
+              }
+            }
+          },
+          "202": {
+            "description": "Initiate account update request",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/RequestInfoResponse"
+                }
+              }
+            }
+          },
+          "500": {
+            "description": "Returns error description representing internal server error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorResponse"
                 }
               }
             }
@@ -1106,7 +1150,7 @@
     "/gw/api/v1/accounts/close/{clientId}": {
       "post": {
         "tags": [
-          "Funds and Banking Accounts"
+          "Account Management Accounts"
         ],
         "summary": "Initiate account closure request for the provided account",
         "parameters": [
@@ -1288,6 +1332,7 @@
         "tags": [
           "Account Management Accounts"
         ],
+        "summary": "Get account details data i.e. capabilities, investment experience, PII data",
         "parameters": [
           {
             "name": "accountId",
@@ -1302,10 +1347,37 @@
         ],
         "responses": {
           "400": {
-            "description": "Bad Request"
+            "description": "Returns error description representing bad request",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/AccountDetailsResponse"
+                }
+              }
+            }
+          },
+          "403": {
+            "description": "Forbidden",
+            "content": {
+              "*/*": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorResponse"
+                }
+              }
+            }
           },
           "200": {
-            "description": "OK",
+            "description": "Get account details data",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/AccountDetailsResponse"
+                }
+              }
+            }
+          },
+          "500": {
+            "description": "Returns error description representing internal server error",
             "content": {
               "application/json": {
                 "schema": {
@@ -1327,6 +1399,7 @@
         "tags": [
           "Account Management Accounts"
         ],
+        "summary": "Get Au10Tix Details",
         "parameters": [
           {
             "name": "accountId",
@@ -1341,17 +1414,41 @@
         ],
         "responses": {
           "400": {
-            "description": "Bad Request"
-          },
-          "200": {
-            "description": "OK",
+            "description": "Returns error description representing bad request",
             "content": {
               "application/json": {
                 "schema": {
-                  "type": "array",
-                  "items": {
-                    "$ref": "#/components/schemas/Au10TixDetailResponse"
-                  }
+                  "$ref": "#/components/schemas/Au10TixDetailResponse"
+                }
+              }
+            }
+          },
+          "403": {
+            "description": "Forbidden",
+            "content": {
+              "*/*": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorResponse"
+                }
+              }
+            }
+          },
+          "200": {
+            "description": "Get Au10Tix Details",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Au10TixDetailResponse"
+                }
+              }
+            }
+          },
+          "500": {
+            "description": "Returns error description representing internal server error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Au10TixDetailResponse"
                 }
               }
             }
@@ -1369,6 +1466,7 @@
         "tags": [
           "Account Management Accounts"
         ],
+        "summary": "Get login messages per account",
         "parameters": [
           {
             "name": "accountId",
@@ -1393,10 +1491,37 @@
         ],
         "responses": {
           "400": {
-            "description": "Bad Request"
+            "description": "Returns error description representing bad request",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorResponse"
+                }
+              }
+            }
+          },
+          "403": {
+            "description": "Forbidden",
+            "content": {
+              "*/*": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorResponse"
+                }
+              }
+            }
           },
           "200": {
-            "description": "OK",
+            "description": "Get login messages",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/LoginMessageResponse"
+                }
+              }
+            }
+          },
+          "500": {
+            "description": "Returns error description representing internal server error",
             "content": {
               "application/json": {
                 "schema": {
@@ -1418,6 +1543,7 @@
         "tags": [
           "Account Management Accounts"
         ],
+        "summary": "Get account status",
         "parameters": [
           {
             "name": "accountId",
@@ -1432,10 +1558,37 @@
         ],
         "responses": {
           "400": {
-            "description": "Bad Request"
+            "description": "Returns error description representing bad request",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorResponse"
+                }
+              }
+            }
+          },
+          "403": {
+            "description": "Forbidden",
+            "content": {
+              "*/*": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorResponse"
+                }
+              }
+            }
           },
           "200": {
-            "description": "OK",
+            "description": "Get account status",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/AccountStatusResponse"
+                }
+              }
+            }
+          },
+          "500": {
+            "description": "Returns error description representing internal server error",
             "content": {
               "application/json": {
                 "schema": {
@@ -1457,6 +1610,7 @@
         "tags": [
           "Account Management Accounts"
         ],
+        "summary": "Get pending tasks",
         "parameters": [
           {
             "name": "accountId",
@@ -1475,20 +1629,58 @@
             "style": "form",
             "explode": false,
             "schema": {
-              "type": "string"
+              "type": "string",
+              "enum": [
+                "pending",
+                "registration"
+              ]
             }
           }
         ],
         "responses": {
           "400": {
-            "description": "Bad Request"
-          },
-          "200": {
-            "description": "OK",
+            "description": "Returns error description representing bad request",
             "content": {
               "application/json": {
                 "schema": {
-                  "type": "object"
+                  "$ref": "#/components/schemas/ErrorResponse"
+                }
+              }
+            }
+          },
+          "403": {
+            "description": "Forbidden",
+            "content": {
+              "*/*": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorResponse"
+                }
+              }
+            }
+          },
+          "200": {
+            "description": "Get pending tasks",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "oneOf": [
+                    {
+                      "$ref": "#/components/schemas/RegistrationTasksResponse"
+                    },
+                    {
+                      "$ref": "#/components/schemas/PendingTasksResponse"
+                    }
+                  ]
+                }
+              }
+            }
+          },
+          "500": {
+            "description": "Returns error description representing internal server error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/RegistrationTasksResponse"
                 }
               }
             }
@@ -1504,7 +1696,7 @@
     "/gw/api/v1/bank-instructions/{clientId}": {
       "post": {
         "tags": [
-          "Funds and Banking Bank Instructions"
+          "Account Management Instructions"
         ],
         "summary": "Initiate a banking instruction (currently only ACH, eDDA, Delete) for the provided IB account",
         "parameters": [
@@ -1823,7 +2015,7 @@
     "/gw/api/v1/bank-instructions/query/{clientId}": {
       "post": {
         "tags": [
-          "Funds and Banking Bank Instructions"
+          "Account Management Instructions"
         ],
         "summary": "Bank instruction Queries",
         "parameters": [
@@ -2080,7 +2272,7 @@
     "/gw/api/v1/client-instructions/{clientId}/{clientInstructionId}": {
       "get": {
         "tags": [
-          "Funds and Banking Client Instructions"
+          "Account Management Instructions"
         ],
         "summary": "Poll status of an Internal Cash Transfer for given instruction id.",
         "parameters": [
@@ -2171,8 +2363,9 @@
     "/gw/api/v1/enumerations/{enumerationType}": {
       "get": {
         "tags": [
-          "Account Management Enumerations"
+          "Account Management Utilities"
         ],
+        "summary": "Get enumerations for Trading permission, Employment detail, Affiliation detail, Financial Range information, ACATS and so on",
         "parameters": [
           {
             "name": "enumerationType",
@@ -2227,14 +2420,41 @@
         ],
         "responses": {
           "400": {
-            "description": "Bad Request"
-          },
-          "200": {
-            "description": "OK",
+            "description": "Returns error description representing bad request",
             "content": {
               "application/json": {
                 "schema": {
-                  "type": "object"
+                  "$ref": "#/components/schemas/ErrorResponse"
+                }
+              }
+            }
+          },
+          "403": {
+            "description": "Forbidden",
+            "content": {
+              "*/*": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorResponse"
+                }
+              }
+            }
+          },
+          "200": {
+            "description": "Get enumerations",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/EnumerationResponse"
+                }
+              }
+            }
+          },
+          "500": {
+            "description": "Returns error description representing internal server error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/EnumerationResponse"
                 }
               }
             }
@@ -2251,7 +2471,7 @@
     "/gw/api/v1/external-asset-transfers/{clientId}": {
       "post": {
         "tags": [
-          "Funds and Banking External Asset Transfers"
+          "Account Management Transfers"
         ],
         "summary": "External Asset transfer (FOP, DWAC , Complex Asset Transfer)",
         "parameters": [
@@ -2645,7 +2865,7 @@
     "/gw/api/v1/external-cash-transfers/{clientId}": {
       "post": {
         "tags": [
-          "Funds and Banking External Cash Transfers"
+          "Account Management Transfers"
         ],
         "summary": "External Cash transfers (Deposit and Withdraw fund)",
         "parameters": [
@@ -2951,7 +3171,7 @@
     "/gw/api/v1/external-cash-transfers/query/{clientId}": {
       "post": {
         "tags": [
-          "Funds and Banking External Cash Transfers"
+          "Account Management Transfers"
         ],
         "summary": "Get Withdrawable Cash Queries",
         "parameters": [
@@ -3150,7 +3370,7 @@
     "/gw/api/v1/fee-templates/{clientId}": {
       "post": {
         "tags": [
-          "Funds and Banking Fee Templates"
+          "Account Management Utilities"
         ],
         "summary": "Initiate a fee template request for provided account",
         "parameters": [
@@ -3312,7 +3532,7 @@
     "/gw/api/v1/fee-templates/query/{clientId}": {
       "post": {
         "tags": [
-          "Funds and Banking Fee Templates"
+          "Account Management Utilities"
         ],
         "summary": "Get fee template details",
         "parameters": [
@@ -3483,7 +3703,7 @@
     "/gw/api/v1/instruction-sets/{clientId}/{instructionSetId}": {
       "get": {
         "tags": [
-          "Funds and Banking Instruction Sets"
+          "Account Management Instructions"
         ],
         "summary": "Poll status of multiple Internal Cash Transfers for given instruction set id.",
         "parameters": [
@@ -3536,7 +3756,7 @@
     "/gw/api/v1/instructions/cancel/{clientId}": {
       "post": {
         "tags": [
-          "Funds and Banking Instructions"
+          "Account Management Instructions"
         ],
         "summary": "Initiate a cancel instruction request for provided instructionId",
         "parameters": [
@@ -3698,7 +3918,7 @@
     "/gw/api/v1/instructions/query/{clientId}": {
       "post": {
         "tags": [
-          "Funds and Banking Instructions"
+          "Account Management Instructions"
         ],
         "summary": "Get Recent Instructions",
         "parameters": [
@@ -3895,10 +4115,10 @@
         ]
       }
     },
-    "/gw/api/v1/instructions/{clientId}/{instructionId}": {
+    "/gw/api/v1/instructions/{instructionId}/{clientId}": {
       "get": {
         "tags": [
-          "Funds and Banking Instructions"
+          "Account Management Instructions"
         ],
         "summary": "Poll status of an Internal Cash Transfer for given instruction id.",
         "parameters": [
@@ -3989,7 +4209,7 @@
     "/gw/api/v1/internal-asset-transfers/{clientId}": {
       "post": {
         "tags": [
-          "Funds and Banking Internal Asset Transfers"
+          "Account Management Transfers"
         ],
         "summary": "Asset transfers within IB",
         "parameters": [
@@ -4177,7 +4397,7 @@
     "/gw/api/v1/internal-cash-transfers/{clientId}": {
       "post": {
         "tags": [
-          "Funds and Banking Internal Cash Transfers"
+          "Account Management Transfers"
         ],
         "summary": "Cash transfer within IB",
         "parameters": [
@@ -4385,7 +4605,7 @@
     "/gw/api/v1/participating-banks/{clientId}": {
       "get": {
         "tags": [
-          "Funds and Banking Participating Banks"
+          "Account Management Utilities"
         ],
         "summary": "Get list of participating banks",
         "parameters": [
@@ -4479,8 +4699,9 @@
     "/gw/api/v1/requests/{requestId}/status": {
       "get": {
         "tags": [
-          "Account Management Requests"
+          "Account Management Utilities"
         ],
+        "summary": "Get status of a request",
         "parameters": [
           {
             "name": "requestId",
@@ -4495,24 +4716,62 @@
           {
             "name": "type",
             "in": "query",
-            "required": false,
+            "required": true,
             "style": "form",
             "explode": false,
             "schema": {
-              "type": "string"
+              "type": "string",
+              "enum": [
+                "response",
+                "update"
+              ]
             }
           }
         ],
         "responses": {
           "400": {
-            "description": "Bad Request"
-          },
-          "200": {
-            "description": "OK",
+            "description": "Returns error description representing bad request",
             "content": {
               "application/json": {
                 "schema": {
-                  "type": "object"
+                  "$ref": "#/components/schemas/ErrorResponse"
+                }
+              }
+            }
+          },
+          "403": {
+            "description": "Forbidden",
+            "content": {
+              "*/*": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorResponse"
+                }
+              }
+            }
+          },
+          "200": {
+            "description": "Returns status for account management request",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "oneOf": [
+                    {
+                      "$ref": "#/components/schemas/AmRequestStatusResponse"
+                    },
+                    {
+                      "$ref": "#/components/schemas/StatusResponse"
+                    }
+                  ]
+                }
+              }
+            }
+          },
+          "500": {
+            "description": "Returns error description representing internal server error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/AmRequestStatusResponse"
                 }
               }
             }
@@ -4602,7 +4861,7 @@
     "/gw/api/v1/statements": {
       "post": {
         "tags": [
-          "Reporting Statements"
+          "Account Management Statements"
         ],
         "summary": "Generates statements in supported formats based on request parameters.",
         "description": "Allowed scopes: [statements.read]<br>Security policy: MEDIUM",
@@ -11506,7 +11765,7 @@
         "x-ib-public": true
       }
     },
-    "/pa/allperiods": {
+    "/pa/allperiods/{param0}": {
       "post": {
         "tags": [
           "Trading Portfolio Analyst"
@@ -11515,8 +11774,8 @@
         "description": "Returns the performance (MTM) for the given accounts, if more than one account is passed, the result is consolidated.",
         "parameters": [
           {
-            "name": "accountId",
-            "in": "query",
+            "name": "param0",
+            "in": "path",
             "required": false,
             "style": "simple",
             "explode": false,
@@ -13592,6 +13851,7 @@
             "style": "form",
             "explode": false,
             "schema": {
+              "type": "string",
               "description": "model"
             }
           }
@@ -14051,7 +14311,7 @@
             "explode": false,
             "schema": {
                 "type": "string"
-            } 
+            }
           },
           {
             "name": "sort",
@@ -14063,7 +14323,7 @@
             "example": "name",
             "schema": {
                 "type": "string"
-            } 
+            }
           },
           {
             "name": "direction",
@@ -14075,7 +14335,7 @@
             "example": "a",
             "schema": {
                 "type": "string"
-            } 
+            }
           },
           {
             "name": "waitForSecDef",
@@ -15833,7 +16093,7 @@
             "explode": false,
             "schema": {
                 "type": "string"
-            } 
+            }
           },
           {
             "name": "bondp",
@@ -15843,7 +16103,7 @@
             "explode": false,
             "schema": {
                 "type": "string"
-            } 
+            }
           }
         ],
         "responses": {
@@ -16365,7 +16625,7 @@
       "ACHDetails": {
         "type": "object",
         "properties": {
-          "isCustInitAch": {
+          "custInitAch": {
             "type": "boolean"
           },
           "bankName": {
@@ -16376,7 +16636,7 @@
       "ACHInstruction": {
         "type": "object",
         "properties": {
-          "isCustInitAch": {
+          "custInitAch": {
             "type": "boolean"
           },
           "type": {
@@ -16484,16 +16744,36 @@
               ]
             }
           },
-          "brokerageServices": {
+          "brokerageServiceCodes": {
             "type": "array",
             "items": {
-              "$ref": "#/components/schemas/BrokerageService"
+              "type": "string",
+              "enum": [
+                "IBClearing",
+                "IBExecution",
+                "IBPrime"
+              ]
             }
           },
           "capabilities": {
             "type": "array",
             "items": {
-              "$ref": "#/components/schemas/Capability"
+              "type": "string",
+              "enum": [
+                "BOND",
+                "FOP",
+                "FUND",
+                "FUT",
+                "MRGN",
+                "MULT",
+                "OPT",
+                "SSF",
+                "CFD",
+                "STK",
+                "CLP",
+                "LEVFX",
+                "CMDTY"
+              ]
             }
           },
           "tradingPermissions": {
@@ -16526,8 +16806,8 @@
           "advisorWrapFees": {
             "$ref": "#/components/schemas/AdvisorWrapFeesType"
           },
-          "fees": {
-            "$ref": "#/components/schemas/FeesTemplateBasedType"
+          "feesTemplateName": {
+            "type": "string"
           },
           "clientCommissionSchedule": {
             "$ref": "#/components/schemas/CommissionScheduleType"
@@ -16553,13 +16833,13 @@
           "depositNotification": {
             "$ref": "#/components/schemas/DepositNotification"
           },
-          "achInstruction": {
+          "achInstructions": {
             "type": "array",
             "items": {
               "$ref": "#/components/schemas/ACHInstruction"
             }
           },
-          "recurringTransaction": {
+          "recurringTransactions": {
             "type": "array",
             "items": {
               "$ref": "#/components/schemas/RecurringTransaction"
@@ -16616,10 +16896,10 @@
           "employeePlan": {
             "type": "string"
           },
-          "isMultiCurrency": {
+          "multiCurrency": {
             "type": "boolean"
           },
-          "isMigration": {
+          "migration": {
             "type": "boolean"
           },
           "sourceAccountId": {
@@ -16645,7 +16925,8 @@
               "RRSP",
               "SRRSP",
               "TFSA",
-              "SIMPLE"
+              "SIMPLE",
+              "ISA"
             ]
           },
           "iraOfficialTitle": {
@@ -16784,6 +17065,9 @@
           "dateLinked": {
             "type": "string"
           },
+          "dateDelinked": {
+            "type": "string"
+          },
           "accountTitle": {
             "type": "string"
           },
@@ -16859,10 +17143,23 @@
           "processType": {
             "type": "string"
           },
+          "riskScore": {
+            "type": "integer",
+            "format": "int32"
+          },
           "trustType": {
             "type": "string"
           },
           "orgType": {
+            "type": "string"
+          },
+          "businessDescription": {
+            "type": "string"
+          },
+          "usTaxPurposeType": {
+            "type": "string"
+          },
+          "tradeIntentionType": {
             "type": "string"
           },
           "registeredAddress": {
@@ -17158,7 +17455,7 @@
           "duplicateAccounts": {
             "type": "array",
             "items": {
-              "$ref": "#/components/schemas/DuplicateAcctRequest"
+              "$ref": "#/components/schemas/DuplicateAccount"
             }
           },
           "achInstructions": {
@@ -17236,7 +17533,7 @@
           "addAdditionalAccounts": {
             "type": "array",
             "items": {
-              "$ref": "#/components/schemas/AddAdditionalAcct"
+              "$ref": "#/components/schemas/AddAdditionalAccounts"
             }
           },
           "allocateVan": {
@@ -17276,14 +17573,77 @@
       "AccountRep": {
         "type": "object",
         "properties": {
-          "repDetail": {
+          "repDetails": {
             "type": "array",
             "items": {
               "$ref": "#/components/schemas/RepDetail"
             }
           },
-          "isIncluded": {
+          "included": {
             "type": "boolean"
+          }
+        }
+      },
+      "AccountStatusBulkResponse": {
+        "type": "object",
+        "properties": {
+          "accounts": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/AccountStatusResponse"
+            }
+          },
+          "error": {
+            "$ref": "#/components/schemas/ErrorResponse"
+          },
+          "hasError": {
+            "type": "boolean"
+          },
+          "errorDescription": {
+            "type": "string"
+          }
+        }
+      },
+      "AccountStatusRequest": {
+        "type": "object",
+        "properties": {
+          "startDate": {
+            "type": "string",
+            "format": "date"
+          },
+          "endDate": {
+            "type": "string",
+            "format": "date"
+          },
+          "offset": {
+            "minimum": 0,
+            "type": "integer",
+            "format": "int32"
+          },
+          "limit": {
+            "maximum": 1000,
+            "minimum": 1,
+            "type": "integer",
+            "format": "int32"
+          },
+          "status": {
+            "type": "string",
+            "enum": [
+              "N",
+              "O",
+              "P",
+              "C",
+              "A",
+              "E",
+              "F",
+              "I",
+              "J",
+              "L",
+              "M",
+              "R",
+              "W",
+              "Q"
+            ]
           }
         }
       },
@@ -17343,13 +17703,13 @@
           "administratorContactPerson": {
             "$ref": "#/components/schemas/AdministratorContactPersonType"
           },
-          "isOwnersResideUS": {
+          "ownersResideUS": {
             "type": "boolean"
           },
-          "isSolicitOwnersResideUS": {
+          "solicitOwnersResideUS": {
             "type": "boolean"
           },
-          "isAcceptOwnersResideUS": {
+          "acceptOwnersResideUS": {
             "type": "boolean"
           },
           "type": {
@@ -17504,7 +17864,7 @@
           }
         }
       },
-      "AddAdditionalAcct": {
+      "AddAdditionalAccounts": {
         "type": "object",
         "properties": {
           "customer": {
@@ -17876,7 +18236,7 @@
           "companyEmailAddress": {
             "type": "string"
           },
-          "isDuplicateStmtRequired": {
+          "duplicateStmtRequired": {
             "type": "boolean"
           }
         }
@@ -17922,6 +18282,35 @@
           }
         }
       },
+      "AmRequestStatusResponse": {
+        "type": "object",
+        "properties": {
+          "requestId": {
+            "type": "string"
+          },
+          "error": {
+            "$ref": "#/components/schemas/ErrorResponse"
+          },
+          "hasError": {
+            "type": "boolean"
+          },
+          "errorDescription": {
+            "type": "string"
+          },
+          "requestType": {
+            "type": "string"
+          },
+          "status": {
+            "type": "string"
+          },
+          "message": {
+            "type": "string"
+          },
+          "acctId": {
+            "type": "string"
+          }
+        }
+      },
       "AnnualBlendedPercentage": {
         "type": "object",
         "properties": {
@@ -17963,7 +18352,7 @@
           "additionalAccounts": {
             "type": "array",
             "items": {
-              "$ref": "#/components/schemas/AddAdditionalAcct"
+              "$ref": "#/components/schemas/AddAdditionalAccounts"
             }
           },
           "masterAccountId": {
@@ -17981,7 +18370,7 @@
               "ru"
             ]
           },
-          "hasTranslation": {
+          "translation": {
             "type": "boolean"
           },
           "paperAccount": {
@@ -18024,6 +18413,9 @@
             "example": "Test template"
           }
         }
+      },
+      "ArrayNode": {
+        "type": "object"
       },
       "AssetExperience": {
         "type": "object",
@@ -18085,50 +18477,70 @@
       "AssociatedEntity": {
         "type": "object",
         "properties": {
-          "name": {
+          "entityId": {
+            "type": "integer",
+            "format": "int32"
+          },
+          "externalCode": {
             "type": "string"
           },
-          "location": {
-            "$ref": "#/components/schemas/Address"
-          },
-          "phones": {
-            "type": "array",
-            "items": {
-              "$ref": "#/components/schemas/PhoneInfo"
-            }
+          "name": {
+            "type": "string"
           },
           "email": {
             "type": "string"
           },
-          "legalEntityIdentification": {
-            "$ref": "#/components/schemas/LegalEntityIdentification"
+          "organizationCountry": {
+            "type": "string"
           },
-          "taxResidencies": {
-            "type": "array",
-            "items": {
-              "$ref": "#/components/schemas/TaxResidency"
+          "phones": {
+            "type": "object",
+            "additionalProperties": {
+              "type": "string"
             }
           },
-          "id": {
-            "type": "string"
+          "residence": {
+            "type": "object",
+            "additionalProperties": {
+              "type": "string"
+            }
           },
-          "externalId": {
-            "type": "string"
+          "mailing": {
+            "type": "object",
+            "additionalProperties": {
+              "type": "string"
+            }
           },
-          "isUsTaxResident": {
-            "type": "boolean"
+          "associations": {
+            "uniqueItems": true,
+            "type": "array",
+            "items": {
+              "type": "string"
+            }
           },
-          "isTranslated": {
-            "type": "boolean"
+          "identityDocuments": {
+            "type": "array",
+            "items": {
+              "type": "object",
+              "additionalProperties": {
+                "type": "string"
+              }
+            }
           },
-          "ownership": {
-            "$ref": "#/components/schemas/Ownership"
+          "taxTreatyDetails": {
+            "type": "array",
+            "items": {
+              "type": "object",
+              "additionalProperties": {
+                "type": "string"
+              }
+            }
           },
-          "title": {
-            "$ref": "#/components/schemas/Title"
-          },
-          "associatedIndividual": {
-            "$ref": "#/components/schemas/AssociatedIndividual"
+          "AssociatedPersons": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/AssociatedPerson"
+            }
           }
         }
       },
@@ -18179,7 +18591,7 @@
             "type": "integer",
             "format": "int32"
           },
-          "residence": {
+          "residenceAddress": {
             "$ref": "#/components/schemas/Address"
           },
           "mailingAddress": {
@@ -18233,26 +18645,26 @@
           "userId": {
             "type": "string"
           },
-          "hasSameMailAddress": {
+          "sameMailAddress": {
             "type": "boolean"
           },
-          "isAuthorizedToSignOnBehalfOfOwner": {
+          "authorizedToSignOnBehalfOfOwner": {
             "type": "boolean"
           },
-          "isAuthorizedTrader": {
+          "authorizedTrader": {
             "type": "boolean"
           },
-          "isUsTaxResident": {
+          "usTaxResident": {
             "type": "boolean"
           },
-          "isTranslated": {
+          "translated": {
             "type": "boolean"
           },
-          "isPrimaryTrustee": {
+          "primaryTrustee": {
             "type": "boolean"
           },
-          "ownership": {
-            "$ref": "#/components/schemas/Ownership"
+          "ownershipPercentage": {
+            "type": "number"
           },
           "titles": {
             "type": "array",
@@ -18260,7 +18672,7 @@
               "$ref": "#/components/schemas/Title"
             }
           },
-          "isAuthorizedPerson": {
+          "authorizedPerson": {
             "type": "boolean"
           },
           "referenceUsername": {
@@ -18499,13 +18911,13 @@
           "perTradeMarkups": {
             "$ref": "#/components/schemas/CommissionScheduleType"
           },
-          "annualBlendedPercentage": {
+          "annualBlendedPercentages": {
             "type": "array",
             "items": {
               "$ref": "#/components/schemas/AnnualBlendedPercentage"
             }
           },
-          "navRange": {
+          "navRanges": {
             "type": "array",
             "items": {
               "$ref": "#/components/schemas/NAVRangeType"
@@ -18572,19 +18984,6 @@
         "properties": {
           "empty": {
             "type": "boolean"
-          }
-        }
-      },
-      "BrokerageService": {
-        "type": "object",
-        "properties": {
-          "code": {
-            "type": "string",
-            "enum": [
-              "IBClearing",
-              "IBExecution",
-              "IBPrime"
-            ]
           }
         }
       },
@@ -18672,29 +19071,6 @@
           }
         }
       },
-      "Capability": {
-        "type": "object",
-        "properties": {
-          "code": {
-            "type": "string",
-            "enum": [
-              "BOND",
-              "FOP",
-              "FUND",
-              "FUT",
-              "MRGN",
-              "MULT",
-              "OPT",
-              "SSF",
-              "CFD",
-              "STK",
-              "CLP",
-              "LEVFX",
-              "CMDTY"
-            ]
-          }
-        }
-      },
       "ChangeAccountHolderDetail": {
         "type": "object",
         "properties": {
@@ -18719,7 +19095,7 @@
               "ru"
             ]
           },
-          "hasTranslation": {
+          "translation": {
             "type": "boolean"
           }
         }
@@ -18876,7 +19252,7 @@
           "amount": {
             "type": "number"
           },
-          "isPlusCost": {
+          "plusCost": {
             "type": "boolean"
           },
           "ticketCharge": {
@@ -18905,10 +19281,11 @@
       "CompleteLoginMessage": {
         "type": "object",
         "properties": {
-          "loginMessages": {
+          "loginMessageIds": {
             "type": "array",
             "items": {
-              "$ref": "#/components/schemas/LoginMessage"
+              "type": "integer",
+              "format": "int32"
             }
           },
           "referenceAccountId": {
@@ -19044,27 +19421,6 @@
           }
         }
       },
-      "ControllerDetailsType": {
-        "type": "object",
-        "properties": {
-          "exchangeCode": {
-            "type": "string"
-          }
-        }
-      },
-      "ControllingPersonType": {
-        "type": "object",
-        "properties": {
-          "designation": {
-            "type": "string",
-            "enum": [
-              "SENIOR_MGMT_OFFICER",
-              "BY_OWNERSHIP",
-              "BY_OTHER_MEANS"
-            ]
-          }
-        }
-      },
       "CreateSessionRequest": {
         "required": [
           "credential",
@@ -19131,7 +19487,7 @@
           "externalId": {
             "type": "string"
           },
-          "isAuthorizedTrader": {
+          "authorizedTrader": {
             "type": "boolean"
           }
         }
@@ -19185,7 +19541,7 @@
           "externalId": {
             "type": "string"
           },
-          "isTransferUsMicroCapStock": {
+          "transferUsMicroCapStock": {
             "type": "boolean"
           },
           "type": {
@@ -19215,7 +19571,7 @@
           "email": {
             "type": "string"
           },
-          "isMdStatusNonPro": {
+          "mdStatusNonPro": {
             "type": "boolean"
           },
           "preferredPrimaryLanguage": {
@@ -19236,7 +19592,7 @@
           "meetsAmlStandard": {
             "type": "string"
           },
-          "hasDirectTradingAccess": {
+          "directTradingAccess": {
             "type": "boolean"
           },
           "originCountry": {
@@ -19249,16 +19605,16 @@
           "governingState": {
             "type": "string"
           },
-          "isOptForDebitCard": {
+          "optForDebitCard": {
             "type": "boolean"
           },
-          "isRoboFaClient": {
+          "roboFaClient": {
             "type": "boolean"
           },
-          "isIndependentAccount": {
+          "independentAccount": {
             "type": "boolean"
           },
-          "isPaperAccount": {
+          "paperAccount": {
             "type": "boolean"
           }
         }
@@ -19272,10 +19628,10 @@
           "externalId": {
             "type": "string"
           },
-          "externalAcctID": {
+          "externalAccountID": {
             "type": "string"
           },
-          "acctID": {
+          "accountID": {
             "type": "string"
           },
           "name": {
@@ -19303,9 +19659,6 @@
             "type": "string"
           },
           "firmID": {
-            "type": "string"
-          },
-          "accountID": {
             "type": "string"
           },
           "agentName": {
@@ -19836,7 +20189,7 @@
             "type": "integer",
             "format": "int32"
           },
-          "isValidAddress": {
+          "validAddress": {
             "type": "boolean"
           },
           "execLoginTimestamp": {
@@ -19892,7 +20245,7 @@
           "signature": {
             "type": "string"
           },
-          "externalAcctId": {
+          "externalAccountId": {
             "type": "string"
           },
           "externalIndividualId": {
@@ -19959,12 +20312,12 @@
               "ru"
             ]
           },
-          "hasTranslation": {
+          "translation": {
             "type": "boolean"
           }
         }
       },
-      "DuplicateAcctRequest": {
+      "DuplicateAccount": {
         "type": "object",
         "properties": {
           "referenceAccountId": {
@@ -20237,6 +20590,26 @@
           }
         }
       },
+      "EnumerationResponse": {
+        "type": "object",
+        "properties": {
+          "error": {
+            "$ref": "#/components/schemas/ErrorResponse"
+          },
+          "hasError": {
+            "type": "boolean"
+          },
+          "errorDescription": {
+            "type": "string"
+          },
+          "enumerationsType": {
+            "type": "string"
+          },
+          "jsonData": {
+            "$ref": "#/components/schemas/ArrayNode"
+          }
+        }
+      },
       "ErrorResponse": {
         "type": "object",
         "properties": {
@@ -20363,7 +20736,8 @@
               "RRSP",
               "SRRSP",
               "TFSA",
-              "SIMPLE"
+              "SIMPLE",
+              "ISA"
             ]
           },
           "marginLoan": {
@@ -20471,10 +20845,36 @@
           }
         }
       },
-      "FeesTemplateBasedType": {
+      "FileData": {
         "type": "object",
         "properties": {
-          "templateName": {
+          "data": {
+            "type": "object"
+          },
+          "name": {
+            "type": "string"
+          }
+        }
+      },
+      "FileDetailsResponse": {
+        "type": "object",
+        "properties": {
+          "error": {
+            "$ref": "#/components/schemas/ErrorResponse"
+          },
+          "hasError": {
+            "type": "boolean"
+          },
+          "errorDescription": {
+            "type": "string"
+          },
+          "accountId": {
+            "type": "string"
+          },
+          "requestFileName": {
+            "type": "string"
+          },
+          "responseFileName": {
             "type": "string"
           }
         }
@@ -20538,16 +20938,8 @@
           "sourceOfFunds": {
             "type": "string"
           },
-          "isTranslated": {
+          "translated": {
             "type": "boolean"
-          }
-        }
-      },
-      "FinancialOrgType": {
-        "type": "object",
-        "properties": {
-          "code": {
-            "type": "string"
           }
         }
       },
@@ -20612,8 +21004,13 @@
       "FormCRS": {
         "type": "object",
         "properties": {
-          "controllingPerson": {
-            "$ref": "#/components/schemas/ControllingPersonType"
+          "controllingPersonDesignation": {
+            "type": "string",
+            "enum": [
+              "SENIOR_MGMT_OFFICER",
+              "BY_OWNERSHIP",
+              "BY_OTHER_MEANS"
+            ]
           },
           "oecdStatus": {
             "type": "string",
@@ -20653,7 +21050,7 @@
           "foreignTaxId": {
             "type": "string"
           },
-          "isTinOrExplanationRequired": {
+          "tinOrExplanationRequired": {
             "type": "boolean"
           },
           "explanation": {
@@ -20682,7 +21079,7 @@
               "Physical"
             ]
           },
-          "isBlankForm": {
+          "blankForm": {
             "type": "boolean"
           },
           "taxFormFile": {
@@ -20692,7 +21089,7 @@
             "type": "integer",
             "format": "int32"
           },
-          "isElectronicFormat": {
+          "electronicFormat": {
             "type": "boolean"
           },
           "submitDate": {
@@ -20703,8 +21100,11 @@
       "FormW8BENE": {
         "type": "object",
         "properties": {
-          "substantialUsOwners": {
-            "$ref": "#/components/schemas/SubstantialUsOwners"
+          "substantialUsOwnerExternalIds": {
+            "type": "array",
+            "items": {
+              "type": "string"
+            }
           },
           "name": {
             "type": "string"
@@ -20776,7 +21176,7 @@
           "foreignTin": {
             "type": "string"
           },
-          "tinOrExplanationReqdToCreateAccounts": {
+          "tinOrExplanationRequired": {
             "type": "boolean"
           },
           "explanation": {
@@ -21622,10 +22022,10 @@
               "$ref": "#/components/schemas/IRAContingentBeneficiaryEntity"
             }
           },
-          "isSpousePrimaryBeneficary": {
+          "spousePrimaryBeneficary": {
             "type": "boolean"
           },
-          "isSuccessor": {
+          "successor": {
             "type": "boolean"
           }
         }
@@ -21677,7 +22077,7 @@
             "type": "integer",
             "format": "int32"
           },
-          "residence": {
+          "residenceAddress": {
             "$ref": "#/components/schemas/Address"
           },
           "mailingAddress": {
@@ -21731,26 +22131,26 @@
           "userId": {
             "type": "string"
           },
-          "hasSameMailAddress": {
+          "sameMailAddress": {
             "type": "boolean"
           },
-          "isAuthorizedToSignOnBehalfOfOwner": {
+          "authorizedToSignOnBehalfOfOwner": {
             "type": "boolean"
           },
-          "isAuthorizedTrader": {
+          "authorizedTrader": {
             "type": "boolean"
           },
-          "isUsTaxResident": {
+          "usTaxResident": {
             "type": "boolean"
           },
-          "isTranslated": {
+          "translated": {
             "type": "boolean"
           },
-          "isPrimaryTrustee": {
+          "primaryTrustee": {
             "type": "boolean"
           },
-          "ownership": {
-            "$ref": "#/components/schemas/Ownership"
+          "ownershipPercentage": {
+            "type": "number"
           },
           "title": {
             "$ref": "#/components/schemas/Title"
@@ -21786,7 +22186,7 @@
           "name": {
             "type": "string"
           },
-          "location": {
+          "address": {
             "$ref": "#/components/schemas/Address"
           },
           "id": {
@@ -21795,8 +22195,8 @@
           "externalId": {
             "type": "string"
           },
-          "ownership": {
-            "$ref": "#/components/schemas/Ownership"
+          "ownershipPercentage": {
+            "type": "number"
           },
           "title": {
             "$ref": "#/components/schemas/Title"
@@ -21891,7 +22291,7 @@
             "type": "integer",
             "format": "int32"
           },
-          "residence": {
+          "residenceAddress": {
             "$ref": "#/components/schemas/Address"
           },
           "mailingAddress": {
@@ -21945,22 +22345,22 @@
           "userId": {
             "type": "string"
           },
-          "hasSameMailAddress": {
+          "sameMailAddress": {
             "type": "boolean"
           },
-          "isAuthorizedToSignOnBehalfOfOwner": {
+          "authorizedToSignOnBehalfOfOwner": {
             "type": "boolean"
           },
-          "isAuthorizedTrader": {
+          "authorizedTrader": {
             "type": "boolean"
           },
-          "isUsTaxResident": {
+          "usTaxResident": {
             "type": "boolean"
           },
-          "isTranslated": {
+          "translated": {
             "type": "boolean"
           },
-          "isPrimaryTrustee": {
+          "primaryTrustee": {
             "type": "boolean"
           },
           "dateOfDeath": {
@@ -22021,7 +22421,8 @@
               "RRSP",
               "SRRSP",
               "TFSA",
-              "SIMPLE"
+              "SIMPLE",
+              "ISA"
             ]
           }
         }
@@ -22073,7 +22474,7 @@
             "type": "integer",
             "format": "int32"
           },
-          "residence": {
+          "residenceAddress": {
             "$ref": "#/components/schemas/Address"
           },
           "mailingAddress": {
@@ -22127,26 +22528,26 @@
           "userId": {
             "type": "string"
           },
-          "hasSameMailAddress": {
+          "sameMailAddress": {
             "type": "boolean"
           },
-          "isAuthorizedToSignOnBehalfOfOwner": {
+          "authorizedToSignOnBehalfOfOwner": {
             "type": "boolean"
           },
-          "isAuthorizedTrader": {
+          "authorizedTrader": {
             "type": "boolean"
           },
-          "isUsTaxResident": {
+          "usTaxResident": {
             "type": "boolean"
           },
-          "isTranslated": {
+          "translated": {
             "type": "boolean"
           },
-          "isPrimaryTrustee": {
+          "primaryTrustee": {
             "type": "boolean"
           },
-          "ownership": {
-            "$ref": "#/components/schemas/Ownership"
+          "ownershipPercentage": {
+            "type": "number"
           },
           "title": {
             "$ref": "#/components/schemas/Title"
@@ -22182,7 +22583,7 @@
           "name": {
             "type": "string"
           },
-          "location": {
+          "address": {
             "$ref": "#/components/schemas/Address"
           },
           "id": {
@@ -22191,8 +22592,8 @@
           "externalId": {
             "type": "string"
           },
-          "ownership": {
-            "$ref": "#/components/schemas/Ownership"
+          "ownershipPercentage": {
+            "type": "number"
           },
           "title": {
             "$ref": "#/components/schemas/Title"
@@ -22337,7 +22738,7 @@
           "fathersName": {
             "type": "string"
           },
-          "hasGreenCard": {
+          "greenCard": {
             "type": "boolean"
           },
           "panNumber": {
@@ -22349,7 +22750,7 @@
           "proofOfAgeCard": {
             "type": "string"
           },
-          "hasExpirationDate": {
+          "expire": {
             "type": "boolean"
           },
           "expirationDate": {
@@ -22405,7 +22806,7 @@
             "type": "integer",
             "format": "int32"
           },
-          "residence": {
+          "residenceAddress": {
             "$ref": "#/components/schemas/Address"
           },
           "mailingAddress": {
@@ -22459,22 +22860,22 @@
           "userId": {
             "type": "string"
           },
-          "hasSameMailAddress": {
+          "sameMailAddress": {
             "type": "boolean"
           },
-          "isAuthorizedToSignOnBehalfOfOwner": {
+          "authorizedToSignOnBehalfOfOwner": {
             "type": "boolean"
           },
-          "isAuthorizedTrader": {
+          "authorizedTrader": {
             "type": "boolean"
           },
-          "isUsTaxResident": {
+          "usTaxResident": {
             "type": "boolean"
           },
-          "isTranslated": {
+          "translated": {
             "type": "boolean"
           },
-          "isPrimaryTrustee": {
+          "primaryTrustee": {
             "type": "boolean"
           }
         }
@@ -22501,7 +22902,10 @@
             }
           },
           "regulatedMemberships": {
-            "$ref": "#/components/schemas/RegulatedMemberships"
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/RegulatedMembership"
+            }
           },
           "accreditedInvestorInformation": {
             "$ref": "#/components/schemas/AccreditedInvestorInformation"
@@ -22989,7 +23393,10 @@
             }
           },
           "regulatedMemberships": {
-            "$ref": "#/components/schemas/RegulatedMemberships"
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/RegulatedMembership"
+            }
           },
           "accreditedInvestorInformation": {
             "$ref": "#/components/schemas/AccreditedInvestorInformation"
@@ -23045,7 +23452,7 @@
           "name": {
             "type": "string"
           },
-          "location": {
+          "address": {
             "$ref": "#/components/schemas/Address"
           },
           "phones": {
@@ -23072,10 +23479,10 @@
           "externalId": {
             "type": "string"
           },
-          "isUsTaxResident": {
+          "usTaxResident": {
             "type": "boolean"
           },
-          "isTranslated": {
+          "translated": {
             "type": "boolean"
           }
         }
@@ -23083,7 +23490,7 @@
       "LegalEntityIdentification": {
         "type": "object",
         "properties": {
-          "placeOfBusiness": {
+          "placeOfBusinessAddress": {
             "$ref": "#/components/schemas/Address"
           },
           "mailingAddress": {
@@ -23126,7 +23533,7 @@
           "externalAccountId": {
             "type": "string"
           },
-          "isClientActiveTrading": {
+          "clientActiveTrading": {
             "type": "boolean"
           }
         }
@@ -23144,7 +23551,7 @@
               "AUSTRALIA_TA"
             ]
           },
-          "qualify": {
+          "qualified": {
             "type": "boolean"
           },
           "treatyCountry": {
@@ -23155,9 +23562,56 @@
       "LoginMessage": {
         "type": "object",
         "properties": {
+          "recordDate": {
+            "type": "string",
+            "format": "date-time"
+          },
           "id": {
             "type": "integer",
             "format": "int32"
+          },
+          "username": {
+            "type": "string"
+          },
+          "messageType": {
+            "type": "string"
+          },
+          "contentId": {
+            "type": "integer",
+            "format": "int32"
+          },
+          "state": {
+            "type": "string"
+          },
+          "description": {
+            "type": "string"
+          }
+        }
+      },
+      "LoginMessageRequest": {
+        "type": "object",
+        "properties": {
+          "startDate": {
+            "type": "string",
+            "format": "date"
+          },
+          "endDate": {
+            "type": "string",
+            "format": "date"
+          },
+          "offset": {
+            "minimum": 0,
+            "type": "integer",
+            "format": "int32"
+          },
+          "limit": {
+            "maximum": 1000,
+            "minimum": 1,
+            "type": "integer",
+            "format": "int32"
+          },
+          "type": {
+            "type": "string"
           }
         }
       },
@@ -23182,26 +23636,14 @@
           "clearingStatusDescription": {
             "type": "string"
           },
-          "loginMessagePresent": {
-            "type": "boolean"
-          },
           "loginMessages": {
             "type": "array",
             "items": {
               "$ref": "#/components/schemas/LoginMessage"
             }
-          }
-        }
-      },
-      "MDServicesType": {
-        "type": "object",
-        "properties": {
-          "service": {
-            "type": "array",
-            "items": {
-              "type": "integer",
-              "format": "int32"
-            }
+          },
+          "loginMessagePresent": {
+            "type": "boolean"
           }
         }
       },
@@ -23439,10 +23881,10 @@
               "$ref": "#/components/schemas/ORGRegulatorType"
             }
           },
-          "isPublic": {
+          "regulated": {
             "type": "boolean"
           },
-          "isRegulated": {
+          "public": {
             "type": "boolean"
           }
         }
@@ -23536,7 +23978,10 @@
             "$ref": "#/components/schemas/AssociatedEntities"
           },
           "regulatedMemberships": {
-            "$ref": "#/components/schemas/RegulatedMemberships"
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/RegulatedMembership"
+            }
           },
           "taxResidencies": {
             "type": "array",
@@ -23569,16 +24014,16 @@
               "UNINCORPORATED BUSINESS"
             ]
           },
-          "isOrgUsSubsidiary": {
+          "orgUsSubsidiary": {
             "type": "boolean"
           },
-          "isQualifiedIntermediary": {
+          "qualifiedIntermediary": {
             "type": "boolean"
           },
-          "hasAssumedPrimaryReporting": {
+          "assumedPrimaryReporting": {
             "type": "boolean"
           },
-          "hasAcceptedPrimaryWithholding": {
+          "acceptedPrimaryWithholding": {
             "type": "boolean"
           },
           "usTaxPurposeType": {
@@ -23594,7 +24039,7 @@
       "OrganizationIdentification": {
         "type": "object",
         "properties": {
-          "placeOfBusiness": {
+          "placeOfBusinessAddress": {
             "$ref": "#/components/schemas/Address"
           },
           "mailingAddress": {
@@ -23627,20 +24072,11 @@
           "formationState": {
             "type": "string"
           },
-          "hasSameMailAddress": {
+          "sameMailAddress": {
             "type": "boolean"
           },
-          "isTranslated": {
+          "translated": {
             "type": "boolean"
-          }
-        }
-      },
-      "Ownership": {
-        "type": "object",
-        "properties": {
-          "percentage": {
-            "type": "integer",
-            "format": "int32"
           }
         }
       },
@@ -23654,7 +24090,7 @@
             "type": "integer",
             "format": "int64"
           },
-          "isAll": {
+          "all": {
             "type": "boolean"
           }
         }
@@ -23666,10 +24102,10 @@
             "type": "number",
             "format": "float"
           },
-          "isMarginLoan": {
+          "marginLoan": {
             "type": "boolean"
           },
-          "isFullCash": {
+          "fullCash": {
             "type": "boolean"
           }
         }
@@ -23684,7 +24120,7 @@
             "type": "integer",
             "format": "int64"
           },
-          "isAll": {
+          "all": {
             "type": "boolean"
           }
         }
@@ -23699,7 +24135,7 @@
             "type": "integer",
             "format": "int64"
           },
-          "isAll": {
+          "all": {
             "type": "boolean"
           },
           "position": {
@@ -23735,7 +24171,7 @@
             "type": "integer",
             "format": "int64"
           },
-          "isAll": {
+          "all": {
             "type": "boolean"
           },
           "position": {
@@ -23760,7 +24196,7 @@
             "type": "integer",
             "format": "int64"
           },
-          "isAll": {
+          "all": {
             "type": "boolean"
           },
           "position": {
@@ -23786,6 +24222,100 @@
           }
         }
       },
+      "PendingTask": {
+        "type": "object",
+        "properties": {
+          "taskNumber": {
+            "type": "integer",
+            "format": "int32"
+          },
+          "formNumber": {
+            "type": "integer",
+            "format": "int32"
+          },
+          "formName": {
+            "type": "string"
+          },
+          "action": {
+            "type": "string"
+          },
+          "externalId": {
+            "type": "string"
+          },
+          "state": {
+            "type": "string"
+          },
+          "url": {
+            "type": "string"
+          },
+          "au10tixCreatedDate": {
+            "type": "string",
+            "format": "date-time"
+          },
+          "au10tixExpiryDate": {
+            "type": "string",
+            "format": "date-time"
+          },
+          "entityId": {
+            "type": "integer",
+            "format": "int32"
+          },
+          "documentrejectReason": {
+            "type": "array",
+            "items": {
+              "type": "string"
+            }
+          },
+          "startdate": {
+            "type": "string",
+            "format": "date-time"
+          },
+          "onlineTask": {
+            "type": "boolean"
+          },
+          "requiredForApproval": {
+            "type": "boolean"
+          },
+          "requiredForTrading": {
+            "type": "boolean"
+          }
+        }
+      },
+      "PendingTasksResponse": {
+        "type": "object",
+        "properties": {
+          "error": {
+            "$ref": "#/components/schemas/ErrorResponse"
+          },
+          "hasError": {
+            "type": "boolean"
+          },
+          "errorDescription": {
+            "type": "string"
+          },
+          "accountId": {
+            "type": "string"
+          },
+          "status": {
+            "type": "string"
+          },
+          "description": {
+            "type": "string"
+          },
+          "state": {
+            "type": "string"
+          },
+          "pendingTasks": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/PendingTask"
+            }
+          },
+          "isPendingTaskPresent": {
+            "type": "boolean"
+          }
+        }
+      },
       "PhoneInfo": {
         "type": "object",
         "properties": {
@@ -23808,7 +24338,7 @@
           "country": {
             "type": "string"
           },
-          "isVerified": {
+          "verified": {
             "type": "boolean"
           }
         }
@@ -24018,7 +24548,7 @@
               "ru"
             ]
           },
-          "hasTranslation": {
+          "translation": {
             "type": "boolean"
           }
         }
@@ -24129,7 +24659,7 @@
       "QuestionnaireType": {
         "type": "object",
         "properties": {
-          "formNo": {
+          "formNumber": {
             "type": "integer",
             "format": "int32"
           },
@@ -24286,33 +24816,76 @@
           }
         }
       },
-      "RegulatedMembership": {
+      "RegistrationTask": {
         "type": "object",
         "properties": {
-          "organizationCode": {
-            "type": "string",
-            "xml": {
-              "name": "organization_code",
-              "attribute": true
-            }
+          "externalId": {
+            "type": "string"
           },
-          "membershipId": {
+          "formName": {
+            "type": "string"
+          },
+          "action": {
+            "type": "string"
+          },
+          "isRequiredForApproval": {
+            "type": "boolean"
+          },
+          "isCompleted": {
+            "type": "boolean"
+          },
+          "dateCompleted": {
             "type": "string",
-            "xml": {
-              "name": "membership_id",
-              "attribute": true
+            "format": "date-time"
+          },
+          "state": {
+            "type": "string"
+          }
+        }
+      },
+      "RegistrationTasksResponse": {
+        "type": "object",
+        "properties": {
+          "error": {
+            "$ref": "#/components/schemas/ErrorResponse"
+          },
+          "hasError": {
+            "type": "boolean"
+          },
+          "errorDescription": {
+            "type": "string"
+          },
+          "accountId": {
+            "type": "string"
+          },
+          "isRegistrationTaskPresent": {
+            "type": "boolean"
+          },
+          "status": {
+            "type": "string"
+          },
+          "description": {
+            "type": "string"
+          },
+          "state": {
+            "type": "string"
+          },
+          "registrationTasks": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/RegistrationTask"
             }
           }
         }
       },
-      "RegulatedMemberships": {
+      "RegulatedMembership": {
         "type": "object",
         "properties": {
-          "regulatedMemberships": {
-            "type": "array",
-            "items": {
-              "$ref": "#/components/schemas/RegulatedMembership"
-            }
+          "organizationCode": {
+            "type": "string"
+          },
+          "membershipId": {
+            "type": "string"
           }
         }
       },
@@ -24393,7 +24966,7 @@
           "financialOrgTypes": {
             "type": "array",
             "items": {
-              "$ref": "#/components/schemas/FinancialOrgType"
+              "type": "string"
             }
           },
           "orgRegulatoryInfo": {
@@ -24402,13 +24975,13 @@
           "ausExposureDetails": {
             "$ref": "#/components/schemas/AUSExposureDetailsType"
           },
-          "controllerDetails": {
-            "$ref": "#/components/schemas/ControllerDetailsType"
+          "controllerExchangeCode": {
+            "type": "string"
           },
           "politicalMilitaryDiplomaticDetails": {
             "$ref": "#/components/schemas/PoliticalMilitaryDiplomaticDetailsType"
           },
-          "isTranslated": {
+          "translated": {
             "type": "boolean"
           }
         }
@@ -24459,6 +25032,59 @@
           }
         }
       },
+      "RequestDetail": {
+        "type": "object",
+        "properties": {
+          "requestId": {
+            "type": "integer",
+            "format": "int64"
+          },
+          "dateSubmitted": {
+            "type": "string"
+          },
+          "status": {
+            "type": "string"
+          },
+          "accountID": {
+            "type": "string"
+          },
+          "requestType": {
+            "type": "string"
+          }
+        }
+      },
+      "RequestDetailsResponse": {
+        "type": "object",
+        "properties": {
+          "error": {
+            "$ref": "#/components/schemas/ErrorResponse"
+          },
+          "hasError": {
+            "type": "boolean"
+          },
+          "errorDescription": {
+            "type": "string"
+          },
+          "requestDetails": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/RequestDetail"
+            }
+          }
+        }
+      },
+      "RequestInfoResponse": {
+        "type": "object",
+        "properties": {
+          "requestId": {
+            "type": "integer",
+            "format": "int64"
+          },
+          "executedAt": {
+            "type": "string"
+          }
+        }
+      },
       "ResetAbandonedAccount": {
         "type": "object",
         "properties": {
@@ -24484,6 +25110,29 @@
           },
           "state": {
             "type": "string"
+          }
+        }
+      },
+      "ResponseFileResponse": {
+        "type": "object",
+        "properties": {
+          "error": {
+            "$ref": "#/components/schemas/ErrorResponse"
+          },
+          "hasError": {
+            "type": "boolean"
+          },
+          "errorDescription": {
+            "type": "string"
+          },
+          "isProcessed": {
+            "type": "boolean"
+          },
+          "name": {
+            "type": "string"
+          },
+          "data": {
+            "type": "object"
           }
         }
       },
@@ -24577,11 +25226,41 @@
             "type": "integer",
             "format": "int32"
           },
-          "isUsedForFunds": {
+          "usedForFunds": {
             "type": "boolean"
           },
           "description": {
             "type": "string"
+          }
+        }
+      },
+      "StatusResponse": {
+        "type": "object",
+        "properties": {
+          "requestId": {
+            "type": "string"
+          },
+          "error": {
+            "$ref": "#/components/schemas/ErrorResponse"
+          },
+          "hasError": {
+            "type": "boolean"
+          },
+          "errorDescription": {
+            "type": "string"
+          },
+          "dateSubmitted": {
+            "type": "string",
+            "format": "date-time"
+          },
+          "isProcessed": {
+            "type": "boolean"
+          },
+          "fileData": {
+            "$ref": "#/components/schemas/FileData"
+          },
+          "xml": {
+            "$ref": "#/components/schemas/XmlResponse"
           }
         }
       },
@@ -24640,25 +25319,6 @@
             "type": "boolean",
             "description": "to gzip the whole response pass true",
             "default": false
-          }
-        }
-      },
-      "SubstantialUsOwner": {
-        "type": "object",
-        "properties": {
-          "externalId": {
-            "type": "string"
-          }
-        }
-      },
-      "SubstantialUsOwners": {
-        "type": "object",
-        "properties": {
-          "substantialUsOwner": {
-            "type": "array",
-            "items": {
-              "$ref": "#/components/schemas/SubstantialUsOwner"
-            }
           }
         }
       },
@@ -24894,13 +25554,13 @@
           "efpQuantityLimits": {
             "$ref": "#/components/schemas/EFPQuantityLimits"
           },
-          "orderQuantityLimit": {
+          "orderQuantityLimits": {
             "type": "array",
             "items": {
               "$ref": "#/components/schemas/OrderQuantityLimit"
             }
           },
-          "dayQuantityLimit": {
+          "dayQuantityLimits": {
             "type": "array",
             "items": {
               "$ref": "#/components/schemas/DayQuantityLimit"
@@ -25066,7 +25726,10 @@
             }
           },
           "regulatedMemberships": {
-            "$ref": "#/components/schemas/RegulatedMemberships"
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/RegulatedMembership"
+            }
           },
           "accreditedInvestorInformation": {
             "$ref": "#/components/schemas/AccreditedInvestorInformation"
@@ -25169,10 +25832,10 @@
           "registrationCountry": {
             "type": "string"
           },
-          "hasSameMailAddress": {
+          "sameMailAddress": {
             "type": "boolean"
           },
-          "isTranslated": {
+          "translated": {
             "type": "boolean"
           }
         }
@@ -25183,7 +25846,7 @@
           "legalEntity": {
             "$ref": "#/components/schemas/LegalEntity"
           },
-          "employee": {
+          "employees": {
             "type": "array",
             "items": {
               "$ref": "#/components/schemas/Individual"
@@ -25238,7 +25901,7 @@
             "type": "integer",
             "format": "int32"
           },
-          "residence": {
+          "residenceAddress": {
             "$ref": "#/components/schemas/Address"
           },
           "mailingAddress": {
@@ -25292,31 +25955,25 @@
           "userId": {
             "type": "string"
           },
-          "hasSameMailAddress": {
+          "sameMailAddress": {
             "type": "boolean"
           },
-          "isAuthorizedToSignOnBehalfOfOwner": {
+          "authorizedToSignOnBehalfOfOwner": {
             "type": "boolean"
           },
-          "isAuthorizedTrader": {
+          "authorizedTrader": {
             "type": "boolean"
           },
-          "isUsTaxResident": {
+          "usTaxResident": {
             "type": "boolean"
           },
-          "isTranslated": {
+          "translated": {
             "type": "boolean"
           },
-          "isPrimaryTrustee": {
+          "primaryTrustee": {
             "type": "boolean"
           },
-          "occupation": {
-            "type": "string"
-          },
-          "description": {
-            "type": "string"
-          },
-          "isNFARegistered": {
+          "nfaRegistered": {
             "type": "boolean"
           },
           "nfaRegistrationNumber": {
@@ -25327,13 +25984,13 @@
       "TrusteesType": {
         "type": "object",
         "properties": {
-          "individual": {
+          "individuals": {
             "type": "array",
             "items": {
               "$ref": "#/components/schemas/TrusteeIndividual"
             }
           },
-          "entity": {
+          "entities": {
             "type": "array",
             "items": {
               "$ref": "#/components/schemas/TrusteeEntityType"
@@ -25433,7 +26090,7 @@
           "token": {
             "type": "string"
           },
-          "hasAccess": {
+          "access": {
             "type": "boolean"
           },
           "externalId": {
@@ -25537,7 +26194,7 @@
           "w9": {
             "$ref": "#/components/schemas/FormW9"
           },
-          "hasTranslation": {
+          "translation": {
             "type": "boolean"
           },
           "inputLanguage": {
@@ -25558,7 +26215,10 @@
               "$ref": "#/components/schemas/Document"
             }
           },
-          "userName": {
+          "entityId": {
+            "type": "string"
+          },
+          "externalId": {
             "type": "string"
           }
         }
@@ -25601,7 +26261,7 @@
               "ru"
             ]
           },
-          "hasTranslation": {
+          "translation": {
             "type": "boolean"
           },
           "referenceAccountId": {
@@ -25623,30 +26283,18 @@
               "NON_COOPERATIVE_ACCOUNT"
             ]
           },
-          "isUsIncomeTax": {
+          "usIncomeTax": {
             "type": "boolean"
           },
           "treatyCountry": {
             "type": "string"
           },
-          "isCertW8Imy": {
+          "certW8Imy": {
             "type": "boolean"
           },
           "effectiveDate": {
             "type": "string",
             "format": "date"
-          }
-        }
-      },
-      "UpsertResponse": {
-        "type": "object",
-        "properties": {
-          "requestId": {
-            "type": "integer",
-            "format": "int64"
-          },
-          "executedAt": {
-            "type": "string"
           }
         }
       },
@@ -25660,7 +26308,11 @@
             }
           },
           "mdServices": {
-            "$ref": "#/components/schemas/MDServicesType"
+            "type": "array",
+            "items": {
+              "type": "integer",
+              "format": "int32"
+            }
           },
           "id": {
             "type": "string"
@@ -25691,7 +26343,7 @@
           "email": {
             "type": "string"
           },
-          "residence": {
+          "residenceAddress": {
             "$ref": "#/components/schemas/Residence"
           },
           "mailingAddress": {
@@ -25720,7 +26372,7 @@
       "UserPrivilege": {
         "type": "object",
         "properties": {
-          "externalAcctId": {
+          "externalAccountId": {
             "type": "string"
           },
           "privilege": {
@@ -25785,7 +26437,7 @@
           "bankName": {
             "type": "string"
           },
-          "bankAcctNumber": {
+          "bankAccountNumber": {
             "type": "string"
           },
           "bankCode": {
@@ -25990,7 +26642,7 @@
       "WithholdingStatementType": {
         "type": "object",
         "properties": {
-          "acctId": {
+          "accountId": {
             "type": "string"
           },
           "fatcaCompliantType": {
@@ -26007,10 +26659,10 @@
           "treatyCountry": {
             "type": "string"
           },
-          "isCorporation": {
+          "corporation": {
             "type": "boolean"
           },
-          "isFlowThrough": {
+          "flowThrough": {
             "type": "boolean"
           },
           "effectiveDate": {
@@ -26035,6 +26687,17 @@
           }
         }
       },
+      "XmlResponse": {
+        "type": "object",
+        "properties": {
+          "isValid": {
+            "type": "boolean"
+          },
+          "errors": {
+            "type": "string"
+          }
+        }
+      },
       "YodleeSession": {
         "type": "object",
         "properties": {
@@ -26047,7 +26710,7 @@
           "itemAccountId": {
             "type": "string"
           },
-          "acctId": {
+          "accountId": {
             "type": "string"
           }
         }
@@ -29239,7 +29902,6 @@
             "description": "Cumulative filled quantity of the instrument against the order ticket."
           },
           "status": {
-            "alias": "order_status",
             "type": "string",
             "description": "Status of the order ticket.",
             "enum": [
@@ -33100,33 +33762,13 @@
       ]
     },
     {
-      "name": "Funds and Banking",
-      "tags": [
-        "Funds and Banking Accounts",
-        "Funds and Banking Bank Instructions",
-        "Funds and Banking Client Instructions",
-        "Funds and Banking External Asset Transfers",
-        "Funds and Banking External Cash Transfers",
-        "Funds and Banking Fee Templates",
-        "Funds and Banking Instruction Sets",
-        "Funds and Banking Instructions",
-        "Funds and Banking Internal Asset Transfers",
-        "Funds and Banking Internal Cash Transfers",
-        "Funds and Banking Participating Banks"
-      ]
-    },
-    {
       "name": "Account Management",
       "tags": [
         "Account Management Accounts",
-        "Account Management Enumerations",
-        "Account Management Requests"
-      ]
-    },
-    {
-      "name": "Reporting",
-      "tags": [
-        "Reporting Statements"
+        "Account Management Instructions",
+        "Account Management Transfers",
+        "Account Management Utilities",
+        "Account Management Statements"
       ]
     }
   ]

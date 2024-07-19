@@ -19,12 +19,10 @@ pub struct Capability {
 
 impl Capability {
     pub fn new() -> Capability {
-        Capability {
-            code: None,
-        }
+        Capability { code: None }
     }
 }
-/// 
+///
 #[derive(Clone, Copy, Debug, Eq, PartialEq, Ord, PartialOrd, Hash, Serialize, Deserialize)]
 pub enum Code {
     #[serde(rename = "BOND")]
@@ -60,4 +58,3 @@ impl Default for Code {
         Self::Bond
     }
 }
-

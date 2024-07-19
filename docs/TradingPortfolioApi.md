@@ -30,7 +30,7 @@ Get an account's allocations by asset class, sector group, and sector.
 Name | Type | Description  | Required | Notes
 ------------- | ------------- | ------------- | ------------- | -------------
 **account_id** | **String** |  | [required] |
-**model** | Option<[**serde_json::Value**](.md)> |  |  |
+**model** | Option<**String**> |  |  |
 
 ### Return type
 

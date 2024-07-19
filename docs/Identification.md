@@ -23,11 +23,11 @@ Name | Type | Description | Notes
 **legal_residence_state** | Option<**String**> |  | [optional]
 **educational_qualification** | Option<**String**> |  | [optional]
 **fathers_name** | Option<**String**> |  | [optional]
-**has_green_card** | Option<**bool**> |  | [optional]
+**green_card** | Option<**bool**> |  | [optional]
 **pan_number** | Option<**String**> |  | [optional]
 **tax_id** | Option<**String**> |  | [optional]
 **proof_of_age_card** | Option<**String**> |  | [optional]
-**has_expiration_date** | Option<**bool**> |  | [optional]
+**expire** | Option<**bool**> |  | [optional]
 **expiration_date** | Option<[**String**](string.md)> |  | [optional]
 
 [[Back to Model list]](../README.md#documentation-for-models) [[Back to API list]](../README.md#documentation-for-api-endpoints) [[Back to README]](../README.md)

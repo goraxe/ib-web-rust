@@ -4,7 +4,7 @@
 
 Name | Type | Description | Notes
 ------------ | ------------- | ------------- | -------------
-**place_of_business** | Option<[**models::Address**](Address.md)> |  | [optional]
+**place_of_business_address** | Option<[**models::Address**](Address.md)> |  | [optional]
 **mailing_address** | Option<[**models::Address**](Address.md)> |  | [optional]
 **identification** | Option<**String**> |  | [optional]
 **identification_country** | Option<**String**> |  | [optional]

@@ -19,9 +19,6 @@ pub struct FinancialOrgType {
 
 impl FinancialOrgType {
     pub fn new() -> FinancialOrgType {
-        FinancialOrgType {
-            code: None,
-        }
+        FinancialOrgType { code: None }
     }
 }
-

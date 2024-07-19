@@ -4,15 +4,15 @@ All URIs are relative to *https://api.ibkr.com*
 
 Method | HTTP request | Description
 ------------- | ------------- | -------------
-[**pa_allperiods_post**](TradingPortfolioAnalystApi.md#pa_allperiods_post) | **POST** /pa/allperiods | Account Performance (All Time Periods)
+[**pa_allperiods_param0_post**](TradingPortfolioAnalystApi.md#pa_allperiods_param0_post) | **POST** /pa/allperiods/{param0} | Account Performance (All Time Periods)
 [**pa_performance_post**](TradingPortfolioAnalystApi.md#pa_performance_post) | **POST** /pa/performance | Account Performance
 [**pa_transactions_post**](TradingPortfolioAnalystApi.md#pa_transactions_post) | **POST** /pa/transactions | Transaction History
 
 
 
-## pa_allperiods_post
+## pa_allperiods_param0_post
 
-> models::DetailedContractInformation pa_allperiods_post(pa_allperiods_post_request, account_id)
+> models::DetailedContractInformation pa_allperiods_param0_post(pa_allperiods_param0_post_request, param0)
 Account Performance (All Time Periods)
 
 Returns the performance (MTM) for the given accounts, if more than one account is passed, the result is consolidated.
@@ -22,8 +22,8 @@ Returns the performance (MTM) for the given accounts, if more than one account i
 
 Name | Type | Description  | Required | Notes
 ------------- | ------------- | ------------- | ------------- | -------------
-**pa_allperiods_post_request** | [**PaAllperiodsPostRequest**](PaAllperiodsPostRequest.md) |  | [required] |
-**account_id** | Option<**String**> |  |  |
+**pa_allperiods_param0_post_request** | [**PaAllperiodsParam0PostRequest**](PaAllperiodsParam0PostRequest.md) |  | [required] |
+**param0** | Option<**String**> |  |  |
 
 ### Return type
 

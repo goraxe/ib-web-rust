@@ -6,7 +6,7 @@ Name | Type | Description | Notes
 ------------ | ------------- | ------------- | -------------
 **name** | Option<[**models::Name**](Name.md)> |  | [optional]
 **email** | Option<**String**> |  | [optional]
-**residence** | Option<[**models::Residence**](Residence.md)> |  | [optional]
+**residence_address** | Option<[**models::Residence**](Residence.md)> |  | [optional]
 **mailing_address** | Option<[**models::MailingAddress**](MailingAddress.md)> |  | [optional]
 **identification** | Option<[**models::Identification**](Identification.md)> |  | [optional]
 **tax_residencies** | Option<[**Vec<models::TaxResidency>**](TaxResidency.md)> |  | [optional]
